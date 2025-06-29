@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthFormError, Button, Input } from "../../components";
-import { server } from "../../bff";
-import { setUser } from "../../redux/actions";
-import { selectUserRole } from "../../redux/selectors";
-import { ROLE } from "../../constants";
+import { useHttp } from "../../hooks";
 
 import styled from "styled-components";
 
@@ -18,11 +14,9 @@ const regFormSchema = yup.object().shape({
 		.string()
 		.required("Заполните пароль")
 		.matches(
-			/^[\w#%]+$/,
-			"Неверно заполнен пароль. Допускаются только буквы, цифры и знаки # %"
-		)
-		.min(6, "Неверно заполнен пароль. Минимум 6 символов")
-		.max(30, "Неверно заполнен пароль. Мaксимум 30 символов"),
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&()]).{8,}$/,
+			"Пароль должен содержать минимум 8 символов, включая заглавную, строчную букву, цифру и спецсимвол"
+		),
 	passcheck: yup
 		.string()
 		.required("Заполните повтор пароля")
@@ -40,37 +34,37 @@ const RegistrationPageContainer = ({ className }) => {
 			password: "",
 			passcheck: "",
 		},
+		mode: "onTouched",
 		resolver: yupResolver(regFormSchema),
 	});
 
+	const { request } = useHttp();
+	const navigate = useNavigate();
+
 	const [serverError, setServerError] = useState(null);
 
-	const dispatch = useDispatch();
-
-	const roleId = useSelector(selectUserRole);
-
-	const onSubmit = ({ email, password }) => {
-		server.register(email, password).then(({ error, res }) => {
-			console.log(res);
-			if (error) {
-				setServerError(`Ошибка запроса: ${error}`);
-				return;
+	const onSubmit = async ({ email, password }) => {
+		try {
+			const data = await request("/auth/register", "POST", {
+				email,
+				password,
+			});
+			if (data) {
+				navigate("/login");
 			}
-
-			dispatch(setUser(res));
-			localStorage.setItem("userData", JSON.stringify(res));
-		});
+		} catch (error) {
+			setServerError(error);
+			return;
+		}
 	};
 
 	const formError =
-		errors?.login?.message ||
+		errors?.email?.message ||
 		errors?.password?.message ||
 		errors?.passcheck?.message;
 	const errorMessage = formError || serverError;
 
-	if (roleId === ROLE.USER) {
-		return <Navigate to="/dashboard" />;
-	}
+	console.log(errors);
 
 	return (
 		<div className={className}>

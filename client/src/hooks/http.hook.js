@@ -13,17 +13,21 @@ export const useHttp = () => {
 					headers["Content-Type"] = "application/json";
 				}
 
-				const response = await fetch(url, { method, body, headers });
+				const response = await fetch(
+					import.meta.env.VITE_APP_API_URL + url,
+					{ method, body, headers }
+				);
 				const data = await response.json();
 
 				if (!response.ok) {
-					throw new Error(data.message || "Что-то пошло не так");
+					throw data.message || "Что-то пошло не так";
 				}
 
 				setLoading(false);
 
 				return data;
 			} catch (e) {
+				console.log(e);
 				setError(e.message);
 				throw e;
 			} finally {

@@ -12,7 +12,7 @@
   "author": "Michael Kolesnik <mexanoid11@mail.ru>",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "npm run start --prefix server",
+    "server": "npm run server --prefix server",
     "client": "npm run dev --prefix client"
   },
   "devDependencies": {
