@@ -1,0 +1,141 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@test.ru",
+      "password": "password123",
+      "first_name": "Иван",
+      "last_name": "Иванов",
+      "middle_name": "Иванович",
+      "phone_number": "+79111234567",
+      "registered_at": "2037-07-16 23:26",
+      "updated_at": "2037-07-16 23:26",
+      "photo_url": "https://www.manageengine.com/images/speaker-placeholder.png",
+      "role_id": 0
+    },
+    {
+      "id": 2,
+      "email": "user@test.ru",
+      "password": "password456",
+      "first_name": "Василий",
+      "last_name": "Васильев",
+      "middle_name": "Васильевич",
+      "phone_number": "+79991111111",
+      "registered_at": "2037-07-16 23:26",
+      "updated_at": "2037-07-16 23:26",
+      "photo_url": "https://www.manageengine.com/images/speaker-placeholder.png",
+      "role_id": 1
+    },
+    {
+      "email": "user1@test.ru",
+      "password": "qwerty123",
+      "first_name": "Тест1",
+      "last_name": "Иванов",
+      "middle_name": "Тестович1",
+      "phone_number": "9991231234",
+      "registered_at": "2037-07-16 23:26",
+      "updated_at": "2025-06-29T12:14:00.070Z",
+      "photo_url": "https://pushinka.top/uploads/posts/2023-04/1681770167_pushinka-top-p-art-brider-na-russkom-instagram-1.webp",
+      "role_id": 1,
+      "id": 3
+    }
+  ],
+  "roles": [
+    {
+      "id": 0,
+      "name": "Администратор"
+    },
+    {
+      "id": 1,
+      "name": "Пользователь"
+    },
+    {
+      "id": 2,
+      "name": "Гость"
+    }
+  ],
+  "operations": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "operation_type": "доход",
+      "amount": 15000,
+      "description": "Зарплата за январь",
+      "counterparty": "ООО Ромашка",
+      "published_at": "2023-01-31T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "operation_type": "расход",
+      "amount": 5000,
+      "description": "Покупка канцелярских товаров",
+      "counterparty": "Канцтовары",
+      "published_at": "2023-02-15T10:00:00Z"
+    }
+  ],
+  "operation_types": [
+    {
+      "id": 1,
+      "name": "Зарплата"
+    },
+    {
+      "id": 2,
+      "name": "Покупка"
+    },
+    {
+      "id": 3,
+      "name": "Перевод"
+    }
+  ],
+  "accounts": [
+    {
+      "id": 1,
+      "name": "Основной счет",
+      "account_number": "40702810000000000001",
+      "balance": 20000
+    },
+    {
+      "id": 2,
+      "name": "Счет для расходов",
+      "account_number": "40702810000000000002",
+      "balance": 5000
+    }
+  ],
+  "sessions": [
+    {
+      "hash": "0.67028682971670261458996264991583302617073059082031",
+      "user": {
+        "id": 3,
+        "email": "user1@test.ru",
+        "password": "qwerty123",
+        "firstName": "",
+        "lastName": "",
+        "middleName": "",
+        "phoneNumber": "",
+        "registeredAt": "2037-07-16 23:26",
+        "photoUrl": "https://pushinka.top/uploads/posts/2023-04/1681770167_pushinka-top-p-art-brider-na-russkom-instagram-1.webp",
+        "updatedAt": "2025-06-25T21:02:29.967Z",
+        "roleId": 1
+      },
+      "id": 1
+    },
+    {
+      "hash": "0.30358224874151940042565911426208913326263427734375",
+      "user": {
+        "id": 3,
+        "email": "user1@test.ru",
+        "password": "qwerty123",
+        "firstName": "Тест1",
+        "lastName": "Тестов1",
+        "middleName": "Тестович1",
+        "phoneNumber": "9991231234",
+        "registeredAt": "2037-07-16 23:26",
+        "photoUrl": "https://pushinka.top/uploads/posts/2023-04/1681770167_pushinka-top-p-art-brider-na-russkom-instagram-1.webp",
+        "updatedAt": "2025-06-25T21:19:01.627Z",
+        "roleId": 1
+      },
+      "id": 2
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "fintrack",
+  "version": "1.0.0",
+  "description": "fintrack, finance, tracker",
+  "keywords": [
+    "fullstack",
+    "frontend",
+    "backend",
+    "mern"
+  ],
+  "license": "ISC",
+  "author": "Michael Kolesnik <mexanoid11@mail.ru>",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npm run start --prefix server",
+    "client": "npm run dev --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
