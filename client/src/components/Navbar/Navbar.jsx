@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks";
 import { Logo } from "../Logo/Logo";
-import { logout } from "../../redux/actions";
 import { selectUser } from "../../redux/selectors";
 
 import styled from "styled-components";
@@ -30,15 +30,12 @@ const Img = styled.img`
 
 const NavbarContainer = ({ className }) => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
-
-	const { session } = JSON.parse(localStorage.getItem("userData"));
+	const { logout } = useAuth();
 
 	const { photoUrl } = useSelector(selectUser);
 
 	const onLogout = () => {
-		dispatch(logout(session));
-		localStorage.removeItem("userData");
+		logout();
 		navigate("/");
 	};
 

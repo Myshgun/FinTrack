@@ -5,9 +5,9 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthFormError, Button, Input } from "../../components";
-import { server } from "../../bff";
-import { selectUserRole } from "../../redux/selectors";
+import { useAuth, useHttp } from "../../hooks";
 import { setUser } from "../../redux/actions";
+import { selectUserRole } from "../../redux/selectors";
 import { ROLE } from "../../constants";
 
 import styled from "styled-components";
@@ -23,11 +23,9 @@ const authFormSchema = yup.object().shape({
 		.string()
 		.required("Заполните пароль")
 		.matches(
-			/^[\w#%]+$/,
-			"Неверно заполнен пароль. Допускаются только буквы, цифры и знаки # %"
-		)
-		.min(6, "Неверно заполнен пароль. Минимум 6 символов")
-		.max(30, "Неверно заполнен пароль. Мaксимум 30 символов"),
+			/^[\w!@#$%^&()*]+$/,
+			"Неверно заполнен пароль. Допускаются только буквы, цифры и спецсимволы"
+		),
 });
 
 const AuthorizationContainer = ({ className }) => {
@@ -43,22 +41,26 @@ const AuthorizationContainer = ({ className }) => {
 		resolver: yupResolver(authFormSchema),
 	});
 
+	const roleId = useSelector(selectUserRole);
 	const [serverError, setServerError] = useState(null);
 
+	const { request } = useHttp();
+	const { login } = useAuth();
 	const dispatch = useDispatch();
 
-	const roleId = useSelector(selectUserRole);
+	const onSubmit = async ({ email, password }) => {
+		try {
+			const data = await request("/auth/login", "POST", {
+				email,
+				password,
+			});
 
-	const onSubmit = ({ email, password }) => {
-		server.authorize(email, password).then(({ error, res }) => {
-			if (error) {
-				setServerError(`Ошибка запроса: ${error}`);
-				return;
-			}
-
-			dispatch(setUser(res));
-			localStorage.setItem("userData", JSON.stringify(res));
-		});
+			login(data.auth.token, data.auth.userId);
+			dispatch(setUser(data.user));
+		} catch (error) {
+			setServerError(error);
+			return;
+		}
 	};
 
 	const formError = errors?.email?.message || errors?.password?.message;

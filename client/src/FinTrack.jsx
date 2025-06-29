@@ -1,9 +1,14 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Authorization, Profile, Registration, Welcome } from "./pages";
 import { Navbar } from "./components";
-import { ROLE } from "./constants";
+import { useHttp } from "./hooks";
+import { setUserAsync } from "./redux/actions";
+import { selectAuthIsAuth, selectUserRole } from "./redux/selectors";
+import { APP, ROLE } from "./constants";
 
 import styled from "styled-components";
+import { useEffect } from "react";
 
 const AuthZoneApp = styled.div`
 	display: flex;
@@ -20,9 +25,9 @@ const MainApp = styled.div`
 `;
 
 const AuthLayout = () => {
-	const { roleId } = JSON.parse(localStorage.getItem("userData"));
+	const isAuthenticated = useSelector(selectAuthIsAuth);
 
-	if (roleId !== ROLE.ADMIN && roleId !== ROLE.USER) {
+	if (!isAuthenticated) {
 		return <Navigate to="/" />;
 	}
 
@@ -48,6 +53,13 @@ const NonAuthZoneApp = styled.div`
 `;
 
 export const FinTrack = () => {
+	const { request } = useHttp();
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(setUserAsync(request));
+	}, [dispatch, request]);
+
 	return (
 		<>
 			<NonAuthZoneApp>

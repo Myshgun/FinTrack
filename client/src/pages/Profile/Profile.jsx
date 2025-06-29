@@ -10,14 +10,14 @@ import styled from "styled-components";
 const ProfileContainer = ({ className }) => {
 	const isEditing = !!useMatch("/profile/edit");
 
-	const dispatch = useDispatch();
-	const requestServer = useServerRequest();
+	// const dispatch = useDispatch();
+	// const requestServer = useServerRequest();
 
-	useEffect(() => {
-		const { session } = JSON.parse(localStorage.getItem("userData"));
+	// useEffect(() => {
+	// 	const { session } = JSON.parse(localStorage.getItem("userData"));
 
-		dispatch(setUserAsync(requestServer, session));
-	}, [dispatch, requestServer]);
+	// 	dispatch(setUserAsync(requestServer, session));
+	// }, [dispatch, requestServer]);
 
 	return (
 		<div className={className}>

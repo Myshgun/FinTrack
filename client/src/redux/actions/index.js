@@ -3,3 +3,4 @@ export * from "./set-user";
 export * from "./logout";
 export * from "./set-user-async";
 export * from "./save-profile-async";
+export * from "./authorize";

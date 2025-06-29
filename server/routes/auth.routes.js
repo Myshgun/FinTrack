@@ -27,7 +27,7 @@ router.post(
         });
       }
 
-      const { email, password: reqPassword } = req.body;
+      const { email, password } = req.body;
 
       const candidate = await User.findOne({ email });
 
@@ -37,7 +37,7 @@ router.post(
           .json({ message: "Такой пользователь уже существует" });
       }
 
-      const hashedPassword = await bcrypt.hash(reqPassword, 12);
+      const hashedPassword = await bcrypt.hash(password, 12);
       const user = new User({ email, password: hashedPassword });
 
       await user.save();
@@ -69,7 +69,7 @@ router.post(
         });
       }
 
-      const { email, password } = req.body;
+      const { email, password: passwordFromClient } = req.body;
 
       const user = await User.findOne({ email });
 
@@ -77,7 +77,7 @@ router.post(
         return res.status(400).json({ message: "Пользователь не найден" });
       }
 
-      const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(passwordFromClient, user.password);
 
       if (!isMatch) {
         return res
@@ -88,10 +88,18 @@ router.post(
       // Чекпоинт, далее JWT
 
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: 3600,
+        expiresIn: process.env.JWT_EXPIRES_IN,
       });
 
-      res.json({ token, userId: user.id });
+      const { password, ...userObj } = user.toObject();
+
+      res.json({
+        auth: {
+          token,
+          userId: user.id,
+        },
+        user: userObj,
+      });
     } catch (e) {
       res
         .status(500)

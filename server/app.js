@@ -12,7 +12,7 @@ app.use(corsMiddleware);
 app.use(express.json({ extended: true }));
 
 app.use("/api/auth", require("./routes/auth.routes"));
-// app.use("/api/user", require("./routes/user.routes"));
+app.use("/api/user", require("./routes/user.routes"));
 
 const PORT = process.env.PORT || 5000;
 

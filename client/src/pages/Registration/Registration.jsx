@@ -64,8 +64,6 @@ const RegistrationPageContainer = ({ className }) => {
 		errors?.passcheck?.message;
 	const errorMessage = formError || serverError;
 
-	console.log(errors);
-
 	return (
 		<div className={className}>
 			<h2>Регистрация</h2>

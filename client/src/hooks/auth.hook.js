@@ -1,35 +1,32 @@
-import { jwtDecode } from "jwt-decode";
 import { useCallback, useEffect, useState } from "react";
-
-const STORAGE_NAME = "userData";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { authorize, LOGOUT } from "../redux/actions";
+import { APP } from "../constants/app";
 
 export const useAuth = () => {
-	const [token, setToken] = useState(null);
 	const [ready, setReady] = useState(false);
-	const [userId, setUserId] = useState(null);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-	const login = useCallback((jwtToken, id) => {
-		setToken(jwtToken);
-		setUserId(id);
-		setIsAuthenticated(true);
+	const dispatch = useDispatch();
+
+	const login = useCallback((token, userId) => {
+		dispatch(authorize({ token, userId }));
 
 		localStorage.setItem(
-			STORAGE_NAME,
-			JSON.stringify({ userId: id, token: jwtToken })
+			APP.USER_DATA_STORAGE,
+			JSON.stringify({ token, userId })
 		);
 	}, []);
 
 	const logout = useCallback(() => {
-		setToken(null);
-		setUserId(null);
-		setIsAuthenticated(false);
+		dispatch(LOGOUT);
 
-		localStorage.removeItem(STORAGE_NAME);
+		localStorage.removeItem(APP.USER_DATA_STORAGE);
 	}, []);
 
 	const checkAuth = useCallback(() => {
-		const data = JSON.parse(localStorage.getItem(STORAGE_NAME));
+		const data = JSON.parse(localStorage.getItem(APP.USER_DATA_STORAGE));
 
 		if (data && data.token) {
 			const decodedToken = jwtDecode(data.token);
@@ -45,12 +42,12 @@ export const useAuth = () => {
 
 	useEffect(() => {
 		checkAuth();
-		const data = JSON.parse(localStorage.getItem(STORAGE_NAME));
+		const data = JSON.parse(localStorage.getItem(APP.USER_DATA_STORAGE));
 		if (data) {
 			login(data.token, data.userId);
 		}
 		setReady(true);
 	}, [checkAuth, login]);
 
-	return { login, logout, token, userId, ready, isAuthenticated };
+	return { login, logout, ready, isAuthenticated };
 };

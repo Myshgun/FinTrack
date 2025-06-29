@@ -11,7 +11,6 @@ export const useServerRequest = () => {
 			const request = ["register", "authorize"].includes(operation)
 				? params
 				: [session, ...params];
-			console.log(request);
 			return server[operation](...request);
 		},
 		[session]

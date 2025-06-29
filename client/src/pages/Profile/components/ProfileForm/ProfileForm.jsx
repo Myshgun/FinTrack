@@ -50,8 +50,6 @@ const ProfileFormContainer = ({ className }) => {
 
 	const [serverError, setServerError] = useState(null);
 
-	console.log(firstName, lastName, middleName);
-
 	const {
 		register,
 		handleSubmit,
