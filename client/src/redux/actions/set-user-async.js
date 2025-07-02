@@ -1,7 +1,10 @@
 import { setUser } from "./set-user";
+import { APP } from "../../constants";
 
 export const setUserAsync = (request) => async (dispatch, getState) => {
-	const token = getState().auth.token || localStorage.getItem("token");
+	const token =
+		getState().auth.token ||
+		localStorage.getItem(APP.USER_DATA_STORAGE.token);
 
 	if (!token) {
 		// Ошибка загрузки пользовательских данных

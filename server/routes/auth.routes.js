@@ -7,7 +7,7 @@ const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 const router = Router();
 
-// ep - /api/auth/register
+/* api/auth/register */
 router.post(
   "/register",
   [
@@ -51,7 +51,7 @@ router.post(
   }
 );
 
-// /api/auth/login
+/* api/auth/login */
 router.post(
   "/login",
   [

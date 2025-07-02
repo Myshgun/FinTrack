@@ -6,9 +6,11 @@ import {
 	usersReducer,
 	accountsReducer,
 	operationsReducer,
+	appReducer,
 } from "./reducers";
 
 const reducer = combineReducers({
+	app: appReducer,
 	auth: authReducer,
 	user: userReducer,
 	users: usersReducer,

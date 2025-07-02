@@ -6,8 +6,12 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthFormError, Icon, Input } from "../../../../components";
-import { useServerRequest } from "../../../../hooks";
-import { saveProfileAsync } from "../../../../redux/actions";
+import { useHttp } from "../../../../hooks";
+import {
+	setAlertMessage,
+	SHOW_ALERT_MESSAGE,
+	updateProfileAsync,
+} from "../../../../redux/actions";
 import { selectUser } from "../../../../redux/selectors";
 
 import styled from "styled-components";
@@ -27,7 +31,7 @@ const profileFormSchema = yup.object().shape({
 	phoneNumber: yup
 		.string()
 		.matches(
-			/^(\+7|8)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/,
+			/^(\+7|8)?[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/,
 			"Введите корректный номер телефона"
 		),
 	photoUrl: yup.string().url(),
@@ -35,7 +39,7 @@ const profileFormSchema = yup.object().shape({
 
 const ProfileFormContainer = ({ className }) => {
 	const dispatch = useDispatch();
-	const requestServer = useServerRequest();
+	const { request } = useHttp();
 	const navigate = useNavigate();
 
 	const {
@@ -66,16 +70,26 @@ const ProfileFormContainer = ({ className }) => {
 		resolver: yupResolver(profileFormSchema),
 	});
 
-	const formError = errors?.email?.message || errors?.password?.message;
+	const formError =
+		errors?.firstName?.message ||
+		errors?.lastName?.message ||
+		errors?.middleName?.message ||
+		errors?.email?.message ||
+		errors?.phoneNumber?.message ||
+		errors?.photoUrl?.message;
 	const errorMessage = formError || serverError;
 
 	const onSave = (formData) => {
 		dispatch(
-			saveProfileAsync(requestServer, {
+			updateProfileAsync(request, {
 				id,
 				...formData,
 			})
-		).then(() => navigate(`/profile`));
+		).then((message) => {
+			dispatch(setAlertMessage(message));
+			dispatch(SHOW_ALERT_MESSAGE);
+			navigate(`/profile`);
+		});
 	};
 
 	return (
@@ -113,7 +127,7 @@ const ProfileFormContainer = ({ className }) => {
 						Отчество
 					</Input>
 				</div>
-				<StyledButton>
+				<StyledButton type="submit">
 					<Icon id="fa-floppy-o" size="30px" inactive={false} />
 				</StyledButton>
 			</div>

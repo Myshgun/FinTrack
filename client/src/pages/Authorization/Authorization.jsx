@@ -55,6 +55,13 @@ const AuthorizationContainer = ({ className }) => {
 				password,
 			});
 
+			if (!data) {
+				setServerError(
+					"Произошла ошибка при авторизации. Попробуйте еще раз"
+				);
+				return;
+			}
+
 			login(data.auth.token, data.auth.userId);
 			dispatch(setUser(data.user));
 		} catch (error) {

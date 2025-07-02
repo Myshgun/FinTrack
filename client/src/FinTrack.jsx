@@ -1,14 +1,17 @@
+import { useEffect } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Authorization, Profile, Registration, Welcome } from "./pages";
-import { Navbar } from "./components";
+import { Alert, Navbar } from "./components";
 import { useHttp } from "./hooks";
 import { setUserAsync } from "./redux/actions";
-import { selectAuthIsAuth, selectUserRole } from "./redux/selectors";
-import { APP, ROLE } from "./constants";
+import {
+	selectAlertMessage,
+	selectAuthIsAuth,
+	selectIsAlertVisible,
+} from "./redux/selectors";
 
 import styled from "styled-components";
-import { useEffect } from "react";
 
 const AuthZoneApp = styled.div`
 	display: flex;
@@ -25,11 +28,15 @@ const MainApp = styled.div`
 `;
 
 const AuthLayout = () => {
-	const isAuthenticated = useSelector(selectAuthIsAuth);
+	const isAlertVisible = useSelector(selectIsAlertVisible);
+	const alertMessage = useSelector(selectAlertMessage);
 
-	if (!isAuthenticated) {
-		return <Navigate to="/" />;
-	}
+	const { request } = useHttp();
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(setUserAsync(request));
+	}, [dispatch, request]);
 
 	return (
 		<AuthZoneApp>
@@ -37,6 +44,11 @@ const AuthLayout = () => {
 			<MainApp>
 				<Outlet />
 			</MainApp>
+			{isAlertVisible && (
+				<Alert type="success" duration={2000}>
+					{alertMessage}
+				</Alert>
+			)}
 		</AuthZoneApp>
 	);
 };
@@ -53,12 +65,7 @@ const NonAuthZoneApp = styled.div`
 `;
 
 export const FinTrack = () => {
-	const { request } = useHttp();
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		dispatch(setUserAsync(request));
-	}, [dispatch, request]);
+	const isAuthenticated = useSelector(selectAuthIsAuth);
 
 	return (
 		<>
@@ -68,7 +75,15 @@ export const FinTrack = () => {
 					<Route path="/login" element={<Authorization />} />
 					<Route path="/register" element={<Registration />} />
 
-					<Route element={<AuthLayout />}>
+					<Route
+						element={
+							isAuthenticated ? (
+								<AuthLayout />
+							) : (
+								<Navigate to="/" />
+							)
+						}
+					>
 						<Route path="/dashboard" element={<div>Дашборд</div>} />
 						<Route
 							path="/operations"

@@ -5,3 +5,4 @@ export * from "./Logo/Logo";
 export * from "./Navbar/Navbar";
 export * from "./Loader/Loader";
 export * from "./AuthFormError/AuthFormError";
+export * from "./Alert/Alert";
