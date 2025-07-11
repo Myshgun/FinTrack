@@ -16,6 +16,7 @@ const userSchema = new Schema({
 		default: "https://www.manageengine.com/images/speaker-placeholder.png",
 	},
 	role_id: { type: Number, required: true, default: 1 },
+	accounts: [{ type: Types.ObjectId, ref: "Account" }],
 });
 
 userSchema.set("toObject", {

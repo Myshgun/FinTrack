@@ -1,8 +1,13 @@
 import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectAuthIsAuth, selectAuthToken } from "../redux/selectors";
 
 export const useHttp = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
+
+	const isAuthenticated = useSelector(selectAuthIsAuth);
+	const token = useSelector(selectAuthToken);
 
 	const request = useCallback(
 		async (url, method = "GET", body = null, headers = {}) => {
@@ -11,6 +16,10 @@ export const useHttp = () => {
 				if (body) {
 					body = JSON.stringify(body);
 					headers["Content-Type"] = "application/json";
+				}
+
+				if (isAuthenticated) {
+					headers["Authorization"] = `Bearer ${token}`;
 				}
 
 				const response = await fetch(

@@ -6,3 +6,5 @@ export * from "./Navbar/Navbar";
 export * from "./Loader/Loader";
 export * from "./AuthFormError/AuthFormError";
 export * from "./Alert/Alert";
+export * from "./Content/Content";
+export * from "./Form/Form";

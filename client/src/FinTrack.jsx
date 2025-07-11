@@ -1,15 +1,26 @@
 import { useEffect } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Authorization, Profile, Registration, Welcome } from "./pages";
+import {
+	Accounts,
+	Authorization,
+	Dashboard,
+	Operations,
+	Panel,
+	Profile,
+	Registration,
+	Welcome,
+} from "./pages";
 import { Alert, Navbar } from "./components";
 import { useHttp } from "./hooks";
-import { setUserAsync } from "./redux/actions";
+import { loadAccountsAsync, setUserAsync } from "./redux/actions";
 import {
 	selectAlertMessage,
 	selectAuthIsAuth,
 	selectIsAlertVisible,
+	selectUserRole,
 } from "./redux/selectors";
+import { ROLE } from "./constants";
 
 import styled from "styled-components";
 
@@ -36,6 +47,7 @@ const AuthLayout = () => {
 
 	useEffect(() => {
 		dispatch(setUserAsync(request));
+		dispatch(loadAccountsAsync(request));
 	}, [dispatch, request]);
 
 	return (
@@ -66,6 +78,7 @@ const NonAuthZoneApp = styled.div`
 
 export const FinTrack = () => {
 	const isAuthenticated = useSelector(selectAuthIsAuth);
+	const role = useSelector(selectUserRole);
 
 	return (
 		<>
@@ -84,14 +97,17 @@ export const FinTrack = () => {
 							)
 						}
 					>
-						<Route path="/dashboard" element={<div>Дашборд</div>} />
-						<Route
-							path="/operations"
-							element={<div>Операции</div>}
-						/>
-						<Route path="/accounts" element={<div>Счета</div>} />
+						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/operations" element={<Operations />} />
+						<Route path="/accounts" element={<Accounts />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/profile/edit" element={<Profile />} />
+						<Route
+							path="/panel"
+							element={
+								role === ROLE.ADMIN ? <Panel /> : <Dashboard />
+							}
+						/>
 					</Route>
 
 					<Route path="*" element={<div>Ошибка</div>} />

@@ -2,9 +2,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks";
 import { Logo } from "../Logo/Logo";
-import { selectUser } from "../../redux/selectors";
+import { selectUser, selectUserRole } from "../../redux/selectors";
 
 import styled from "styled-components";
+import { ROLE } from "../../constants";
 
 const NavItem = styled.a`
 	display: flex;
@@ -33,6 +34,7 @@ const NavbarContainer = ({ className }) => {
 	const { logout } = useAuth();
 
 	const { photoUrl } = useSelector(selectUser);
+	const role = useSelector(selectUserRole);
 
 	const onLogout = () => {
 		logout();
@@ -59,6 +61,11 @@ const NavbarContainer = ({ className }) => {
 						<NavItem onClick={() => navigate("/accounts")}>
 							Счета
 						</NavItem>
+						{role === ROLE.ADMIN ? (
+							<NavItem onClick={() => navigate("/panel")}>
+								Панель
+							</NavItem>
+						) : null}
 					</div>
 					<NavItem className="exit-block" onClick={onLogout}>
 						Выход

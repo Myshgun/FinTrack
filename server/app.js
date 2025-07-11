@@ -13,19 +13,20 @@ app.use(express.json({ extended: true }));
 
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/user", require("./routes/user.routes"));
+app.use("/api/accounts", require("./routes/accounts.routes"));
 
 const PORT = process.env.PORT || 5000;
 
 async function start() {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {});
-    app.listen(5000, () =>
-      console.log(`App has been started on port ${PORT}...`)
-    );
-  } catch (e) {
-    console.log("Server Error", e.message);
-    process.exit(1);
-  }
+	try {
+		await mongoose.connect(process.env.MONGO_URI, {});
+		app.listen(5000, () =>
+			console.log(`App has been started on port ${PORT}...`)
+		);
+	} catch (e) {
+		console.log("Server Error", e.message);
+		process.exit(1);
+	}
 }
 
 start();

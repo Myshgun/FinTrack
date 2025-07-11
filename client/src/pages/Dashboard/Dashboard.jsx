@@ -1,4 +1,5 @@
-const onLogout = () => {
-	dispatch(logout(session));
-	sessionStorage.removeItem("userData");
+import { Content } from "../../components";
+
+export const Dashboard = () => {
+	return <Content title="Дашборд"></Content>;
 };
