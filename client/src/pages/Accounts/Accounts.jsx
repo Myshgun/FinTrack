@@ -49,15 +49,18 @@ export const Accounts = () => {
 
 	return (
 		<Content title="Счета">
-			<Form
-				fields={fieldsToAddAccountForm}
-				buttonText="Добавить счет"
-				onSubmit={onAddAccount}
-			/>
-			<br />
-			{accounts.map((account) => (
-				<AccountCard key={account.id} account={account} />
-			))}
+			<Content inside={true} view="horizontal">
+				<Form
+					fields={fieldsToAddAccountForm}
+					buttonText="Добавить счет"
+					onSubmit={onAddAccount}
+				/>
+				<div>
+					{accounts.map((account) => (
+						<AccountCard key={account.id} account={account} />
+					))}
+				</div>
+			</Content>
 		</Content>
 	);
 };

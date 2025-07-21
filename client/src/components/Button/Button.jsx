@@ -6,6 +6,8 @@ const selectColor = (style = "primary") => {
 			return ["#007bff", "#0056b3"];
 		case "success":
 			return ["#28a745", "#218838"];
+		case "danger":
+			return ["#dc3545", "#c82333"];
 		default:
 			return ["#007bff", "#0056b3"];
 	}

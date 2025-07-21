@@ -7,6 +7,8 @@ import {
 	accountsReducer,
 	operationsReducer,
 	appReducer,
+	accountTypesReducer,
+	operationCategoriesReducer,
 } from "./reducers";
 
 const reducer = combineReducers({
@@ -15,7 +17,9 @@ const reducer = combineReducers({
 	user: userReducer,
 	users: usersReducer,
 	accounts: accountsReducer,
+	accountTypes: accountTypesReducer,
 	operations: operationsReducer,
+	operationCategories: operationCategoriesReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -10,7 +10,7 @@ router.get("/", auth, async (req, res) => {
 	try {
 		const user = await User.findOne({ _id: req.user.userId });
 
-		const { password, ...userObj } = user.toObject();
+		const { password, ...userObj } = user.toJSON();
 
 		res.status(201).json(userObj);
 	} catch (e) {
@@ -37,7 +37,7 @@ router.put("/:id", auth, async (req, res) => {
 				{ new: true }
 			);
 
-			const { password, ...userObj } = updatedUser.toObject();
+			const { password, ...userObj } = updatedUser.toJSON();
 
 			res.status(201).json({
 				message: "Данные пользователя обновлены",

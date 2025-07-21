@@ -8,3 +8,5 @@ export * from "./AuthFormError/AuthFormError";
 export * from "./Alert/Alert";
 export * from "./Content/Content";
 export * from "./Form/Form";
+export * from "./Table/Table";
+export * from "./Tag/Tag";

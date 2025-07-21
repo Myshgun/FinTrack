@@ -11,13 +11,19 @@ import {
 	Registration,
 	Welcome,
 } from "./pages";
-import { Alert, Navbar } from "./components";
-import { useHttp } from "./hooks";
-import { loadAccountsAsync, setUserAsync } from "./redux/actions";
+import { Alert, Loader, Navbar } from "./components";
+import { useAuth, useHttp } from "./hooks";
+import {
+	loadAccountsAsync,
+	loadAccountTypesAsync,
+	loadOperationCategoriesAsync,
+	setUserAsync,
+} from "./redux/actions";
 import {
 	selectAlertMessage,
 	selectAuthIsAuth,
 	selectIsAlertVisible,
+	selectIsAuthChecked,
 	selectUserRole,
 } from "./redux/selectors";
 import { ROLE } from "./constants";
@@ -31,11 +37,17 @@ const AuthZoneApp = styled.div`
 	margin: 0 auto;
 	background-color: #20222f;
 	color: white;
+	overflow: hidden;
 `;
 
 const MainApp = styled.div`
 	margin-top: 70px;
 	height: calc(100vh - 70px);
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 const AuthLayout = () => {
@@ -48,6 +60,8 @@ const AuthLayout = () => {
 	useEffect(() => {
 		dispatch(setUserAsync(request));
 		dispatch(loadAccountsAsync(request));
+		dispatch(loadAccountTypesAsync(request));
+		dispatch(loadOperationCategoriesAsync(request));
 	}, [dispatch, request]);
 
 	return (
@@ -78,7 +92,24 @@ const NonAuthZoneApp = styled.div`
 
 export const FinTrack = () => {
 	const isAuthenticated = useSelector(selectAuthIsAuth);
+	const isAuthChecked = useSelector(selectIsAuthChecked);
 	const role = useSelector(selectUserRole);
+
+	const { checkAuth } = useAuth();
+
+	useEffect(() => {
+		if (!isAuthChecked) {
+			checkAuth();
+		}
+	}, [isAuthChecked, checkAuth]);
+
+	if (!isAuthChecked) {
+		return (
+			<NonAuthZoneApp>
+				<Loader />
+			</NonAuthZoneApp>
+		);
+	}
 
 	return (
 		<>

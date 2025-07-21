@@ -1,11 +1,12 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks";
+import { useHttp } from "../../hooks";
 import { Logo } from "../Logo/Logo";
 import { selectUser, selectUserRole } from "../../redux/selectors";
 
 import styled from "styled-components";
 import { ROLE } from "../../constants";
+import { logoutAsync } from "../../redux/actions";
 
 const NavItem = styled.a`
 	display: flex;
@@ -31,13 +32,14 @@ const Img = styled.img`
 
 const NavbarContainer = ({ className }) => {
 	const navigate = useNavigate();
-	const { logout } = useAuth();
+	const { request } = useHttp();
+	const dispatch = useDispatch();
 
 	const { photoUrl } = useSelector(selectUser);
 	const role = useSelector(selectUserRole);
 
 	const onLogout = () => {
-		logout();
+		dispatch(logoutAsync(request));
 		navigate("/");
 	};
 

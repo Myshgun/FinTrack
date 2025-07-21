@@ -2,7 +2,7 @@ const { Schema, model, Types } = require("mongoose");
 
 const accountSchema = new Schema({
 	name: { type: String, required: true },
-	type: { type: String, required: true },
+	type: { type: Types.ObjectId, ref: "AccountType", required: true },
 	owner: { type: Types.ObjectId, ref: "User" },
 });
 

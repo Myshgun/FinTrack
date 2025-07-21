@@ -2,28 +2,30 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 module.exports = (req, res, next) => {
-  if (req.method === "OPTIONS") {
-    return next();
-  }
+	if (req.method === "OPTIONS") {
+		return next();
+	}
 
-  try {
-    const token = req.headers.authorization.split(" ")[1]; // "Bearer TOKEN"
+	try {
+		const token = req.cookies.token;
 
-    if (!token) {
-      return res.status(401).json({ message: "Нет авторизации" });
-    }
+		if (!token) {
+			return res
+				.status(401)
+				.json({ message: "Пользователь не аутентифицирован" });
+		}
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+		const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    req.user = decoded;
+		req.user = decoded;
 
-    return next();
-  } catch (e) {
-    console.log(e);
-    if (e.name === "TokenExpiredError") {
-      return res.status(401).redirect("/");
-    } else {
-      return res.status(401).json({ message: "Нет авторизации" });
-    }
-  }
+		return next();
+	} catch (e) {
+		console.log(e);
+		if (e.name === "TokenExpiredError") {
+			return res.status(401).redirect("/");
+		} else {
+			return res.status(401).json({ message: "Нет авторизации" });
+		}
+	}
 };

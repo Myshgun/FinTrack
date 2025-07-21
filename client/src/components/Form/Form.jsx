@@ -8,7 +8,6 @@ import styled from "styled-components";
 
 const StyledButton = styled(Button)`
 	height: 36px;
-	align-self: end;
 `;
 
 const FormContainer = ({ className, fields, buttonText, onSubmit }) => {
@@ -59,18 +58,20 @@ const FormContainer = ({ className, fields, buttonText, onSubmit }) => {
 				<StyledButton type="submit" style="success">
 					{buttonText}
 				</StyledButton>
+				{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
 			</div>
-			{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
 		</form>
 	);
 };
 
 export const Form = styled(FormContainer)`
 	display: flex;
-	flex-direction: column;
+	margin: 0 auto;
 
 	.main-block {
 		display: flex;
 		gap: 10px;
+		flex-direction: ${({ view }) =>
+			view === "horizontal" ? "row" : "column"};
 	}
 `;

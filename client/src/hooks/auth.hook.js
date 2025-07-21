@@ -1,53 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { authorize, LOGOUT } from "../redux/actions";
-import { APP } from "../constants/app";
+import { authorize, SET_AUTH_CHECKED } from "../redux/actions";
+
+import { useHttp } from "./http.hook";
 
 export const useAuth = () => {
-	const [ready, setReady] = useState(false);
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
-
 	const dispatch = useDispatch();
+	const { request } = useHttp();
 
-	const login = useCallback((token, userId) => {
-		dispatch(authorize({ token, userId }));
+	const login = useCallback(
+		(userId) => {
+			dispatch(authorize(userId));
+		},
+		[dispatch]
+	);
 
-		localStorage.setItem(
-			APP.USER_DATA_STORAGE,
-			JSON.stringify({ token, userId })
-		);
-	}, []);
+	const checkAuth = useCallback(async () => {
+		try {
+			const data = await request("/auth/check", "GET");
 
-	const logout = useCallback(() => {
-		dispatch(LOGOUT);
+			console.log(data.userId);
 
-		localStorage.removeItem(APP.USER_DATA_STORAGE);
-	}, []);
-
-	const checkAuth = useCallback(() => {
-		const data = JSON.parse(localStorage.getItem(APP.USER_DATA_STORAGE));
-
-		if (data && data.token) {
-			const decodedToken = jwtDecode(data.token);
-			const isExpired = Date.now() >= decodedToken.exp * 1000;
-
-			if (isExpired) {
-				logout();
-			} else {
-				setIsAuthenticated(true);
+			if (data.userId) {
+				login(data.userId);
 			}
+		} catch (error) {
+			dispatch(SET_AUTH_CHECKED);
 		}
-	}, [logout]);
+	}, [login, request, dispatch]);
 
-	useEffect(() => {
-		checkAuth();
-		const data = JSON.parse(localStorage.getItem(APP.USER_DATA_STORAGE));
-		if (data) {
-			login(data.token, data.userId);
-		}
-		setReady(true);
-	}, [checkAuth, login]);
-
-	return { login, logout, ready, isAuthenticated };
+	return { login, checkAuth };
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -50,20 +50,20 @@ const AuthorizationContainer = ({ className }) => {
 
 	const onSubmit = async ({ email, password }) => {
 		try {
-			const data = await request("/auth/login", "POST", {
+			const { user } = await request("/auth/login", "POST", {
 				email,
 				password,
 			});
 
-			if (!data) {
+			if (!user) {
 				setServerError(
 					"Произошла ошибка при авторизации. Попробуйте еще раз"
 				);
 				return;
 			}
 
-			login(data.auth.token, data.auth.userId);
-			dispatch(setUser(data.user));
+			login(user.id);
+			dispatch(setUser(user));
 		} catch (error) {
 			setServerError(error);
 			return;
