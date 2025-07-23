@@ -22,9 +22,12 @@ router.get("/", auth, async (req, res) => {
 		const user = await User.findById(req.user.userId);
 
 		if (user.roleId !== ROLE.ADMIN) {
-			const filteredAccountTypes = accountTypes.filter(
-				(type) => type.isActive === true
-			);
+			const filteredAccountTypes = accountTypes
+				.filter((type) => type.isActive === true)
+				.map((type) => ({
+					value: type.type,
+					label: type.description,
+				}));
 			res.status(200).json({
 				message: "Типы счетов загружены для пользователя",
 				accountTypes: filteredAccountTypes,

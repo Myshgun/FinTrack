@@ -9,7 +9,7 @@ const ContentContainer = ({
 }) => {
 	return (
 		<div className={className}>
-			{!inside ? <h3>{title}</h3> : <h4>{title}</h4>}
+			{title && <>{!inside ? <h3>{title}</h3> : <h4>{title}</h4>}</>}
 			{children}
 		</div>
 	);

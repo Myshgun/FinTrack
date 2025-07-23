@@ -19,8 +19,6 @@ export const useAuth = () => {
 		try {
 			const data = await request("/auth/check", "GET");
 
-			console.log(data.userId);
-
 			if (data.userId) {
 				login(data.userId);
 			}
