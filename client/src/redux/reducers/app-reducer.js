@@ -3,6 +3,7 @@ import { ACTION_TYPE } from "../actions";
 const initialAppState = {
 	isAlertVisible: false,
 	alertMessage: "",
+	isLoading: false,
 };
 
 export const appReducer = (state = initialAppState, action) => {
@@ -21,6 +22,11 @@ export const appReducer = (state = initialAppState, action) => {
 			return {
 				...state,
 				alertMessage: action.payload,
+			};
+		case ACTION_TYPE.SET_IS_LOADING:
+			return {
+				...state,
+				isLoading: action.payload,
 			};
 		default:
 			return state;

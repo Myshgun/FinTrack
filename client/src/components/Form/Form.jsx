@@ -8,9 +8,10 @@ import styled from "styled-components";
 
 const StyledButton = styled(Button)`
 	height: 36px;
+	margin-top: ${({ view }) => (view === "horizontal" ? "26px" : "inherit")};
 `;
 
-const FormContainer = ({ className, fields, buttonText, onSubmit }) => {
+const FormContainer = ({ className, fields, buttonText, onSubmit, view }) => {
 	const formSchema = buildSchema(fields);
 
 	const [serverError, setServerError] = useState(null);
@@ -55,7 +56,7 @@ const FormContainer = ({ className, fields, buttonText, onSubmit }) => {
 						{label}
 					</Input>
 				))}
-				<StyledButton type="submit" style="success">
+				<StyledButton type="submit" style="success" view={view}>
 					{buttonText}
 				</StyledButton>
 				{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}

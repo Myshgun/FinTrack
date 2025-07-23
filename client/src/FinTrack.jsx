@@ -17,6 +17,7 @@ import {
 	loadAccountsAsync,
 	loadAccountTypesAsync,
 	loadOperationCategoriesAsync,
+	loadOperationsAsync,
 	setUserAsync,
 } from "./redux/actions";
 import {
@@ -24,11 +25,13 @@ import {
 	selectAuthIsAuth,
 	selectIsAlertVisible,
 	selectIsAuthChecked,
+	selectIsLoading,
 	selectUserRole,
 } from "./redux/selectors";
 import { ROLE } from "./constants";
 
 import styled from "styled-components";
+import { setIsLoading } from "./redux/actions/app/set-is-loading";
 
 const AuthZoneApp = styled.div`
 	display: flex;
@@ -53,23 +56,29 @@ const MainApp = styled.div`
 const AuthLayout = () => {
 	const isAlertVisible = useSelector(selectIsAlertVisible);
 	const alertMessage = useSelector(selectAlertMessage);
+	const isLoading = useSelector(selectIsLoading);
 
 	const { request } = useHttp();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		setIsLoading(true);
 		dispatch(setUserAsync(request));
 		dispatch(loadAccountsAsync(request));
 		dispatch(loadAccountTypesAsync(request));
 		dispatch(loadOperationCategoriesAsync(request));
+		dispatch(loadOperationsAsync(request));
+		setIsLoading(false);
 	}, [dispatch, request]);
 
 	return (
 		<AuthZoneApp>
 			<Navbar />
-			<MainApp>
-				<Outlet />
-			</MainApp>
+			{!isLoading && (
+				<MainApp>
+					<Outlet />
+				</MainApp>
+			)}
 			{isAlertVisible && (
 				<Alert type="success" duration={2000}>
 					{alertMessage}
