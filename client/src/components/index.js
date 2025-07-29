@@ -10,3 +10,4 @@ export * from "./Content/Content";
 export * from "./Form/Form";
 export * from "./Table/Table";
 export * from "./Tag/Tag";
+export * from "./Chart/Chart";

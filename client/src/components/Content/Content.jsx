@@ -21,16 +21,18 @@ export const Content = styled(ContentContainer)`
 	flex-direction: ${({ view }) => (view === "horizontal" ? "row" : "column")};
 	width: ${({ inside }) => (!inside ? "calc(100vw - 300px)" : "100%")};
 	min-height: ${({ inside }) => (!inside ? "calc(100% - 60px)" : "100%")};
+	min-height: 0;
 	padding: 10px 30px;
 	font-size: 20px;
 	border-radius: 10px;
 	background-color: #2a2d3e;
 	overflow-y: auto;
+	overflow: hidden;
 
 	& h3,
 	h4 {
 		text-align: center;
 		align-self: center;
-		color: ${({ inside }) => (!inside ? "inherit" : "#FDC4A5")};
+		color: ${({ inside }) => (!inside ? "inherit" : "white")};
 	}
 `;
