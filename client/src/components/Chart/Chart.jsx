@@ -1,4 +1,3 @@
-import React from "react";
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -33,6 +32,7 @@ export const Chart = ({
 	colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4C84FF", "#9966FF"],
 	darkMode = false,
 	valueType = "absolute",
+	showLegend = true,
 }) => {
 	const textColor = darkMode ? "#FFFFFF" : "#666666";
 	const gridColor = darkMode
@@ -43,6 +43,18 @@ export const Chart = ({
 		responsive: true,
 		maintainAspectRatio: false,
 		plugins: {
+			legend: {
+				display: showLegend,
+				position: type === "pie" ? "right" : "top",
+				labels: {
+					color: textColor,
+					boxWidth: 12,
+					padding: 20,
+					font: {
+						size: 12,
+					},
+				},
+			},
 			tooltip: {
 				callbacks: {
 					label: function (context) {
@@ -58,22 +70,29 @@ export const Chart = ({
 				},
 			},
 		},
-		scales: {
-			y: {
-				beginAtZero: type !== "line",
-				ticks: {
-					color: textColor,
-					callback: (value) =>
-						valueType === "percent"
-							? `${value > 0 ? "+" : ""}${value}%`
-							: `${value.toLocaleString()} ₽`,
+		...(type === "pie" && {
+			scales: {},
+		}),
+		...(type !== "pie" && {
+			scales: {
+				y: {
+					beginAtZero: valueType !== "percent",
+					ticks: {
+						color: textColor,
+						callback: (value) => {
+							if (valueType === "percent") {
+								return `${value > 0 ? "+" : ""}${value}%`;
+							}
+							return `${value.toLocaleString()} ₽`;
+						},
+					},
+					grid: { color: gridColor },
 				},
-				grid: { color: gridColor },
+				x: {
+					ticks: { color: textColor },
+				},
 			},
-			x: {
-				ticks: { color: textColor },
-			},
-		},
+		}),
 	};
 
 	const chartData = {
