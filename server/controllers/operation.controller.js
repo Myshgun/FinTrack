@@ -25,16 +25,32 @@ async function updateAccountBalance(accountId) {
 // Получение всех операций пользователя
 const getAllOperations = async (req, res) => {
 	try {
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+		const skip = (page - 1) * limit;
+
+		const totalOperations = await Operation.countDocuments({
+			owner: req.user.userId,
+		});
+
 		const operations = await Operation.find({
 			owner: req.user.userId,
 		})
 			.populate("account")
 			.populate("category")
-			.sort({ date: -1, createdAt: -1 });
+			.sort({ date: -1, createdAt: -1 })
+			.skip(skip)
+			.limit(limit);
 
 		res.status(200).json({
 			message: "Операции загружены",
 			operations,
+			pagination: {
+				total: totalOperations,
+				page,
+				pages: Math.ceil(totalOperations / limit),
+				limit,
+			},
 		});
 	} catch (e) {
 		res.status(500).json({

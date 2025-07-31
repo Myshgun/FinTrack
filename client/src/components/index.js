@@ -11,3 +11,4 @@ export * from "./Form/Form";
 export * from "./Table/Table";
 export * from "./Tag/Tag";
 export * from "./Chart/Chart";
+export * from "./Pagination/Pagination";

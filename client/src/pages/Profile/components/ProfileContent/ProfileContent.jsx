@@ -29,7 +29,7 @@ const ProfileConentContainer = ({ className }) => {
 		middleName,
 		email,
 		phoneNumber,
-		registeredAt,
+		createdAt,
 		photoUrl,
 	} = useSelector(selectUser);
 
@@ -66,7 +66,7 @@ const ProfileConentContainer = ({ className }) => {
 				</div>
 			</div>
 			<div className="registered-at-block">
-				Дата регистрации <InfoBlock>{registeredAt}</InfoBlock>
+				Дата регистрации <InfoBlock>{createdAt}</InfoBlock>
 			</div>
 		</div>
 	);

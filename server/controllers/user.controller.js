@@ -1,6 +1,5 @@
 const { MESSAGE } = require("../constants/constants");
 const User = require("../models/User");
-const { camelToSnake } = require("../models/transformer");
 
 const getCurrentUser = async (req, res) => {
 	try {
@@ -29,13 +28,9 @@ const updateUser = async (req, res) => {
 			return res.status(404).json({ message: MESSAGE.USER_NOT_FOUND });
 		}
 
-		const newProfileData = camelToSnake({
-			...req.body,
-		});
-
 		const updatedUser = await User.findByIdAndUpdate(
 			req.user.userId,
-			{ $set: { ...newProfileData, updated_at: Date.now() } },
+			{ $set: { ...req.body, updated_at: Date.now() } },
 			{ new: true }
 		);
 

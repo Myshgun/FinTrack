@@ -14,4 +14,5 @@ export * from "./select-accounts";
 export * from "./select-account-types";
 
 export * from "./select-operations";
+export * from "./select-operations-pagination";
 export * from "./select-operation-categories";

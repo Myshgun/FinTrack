@@ -33,6 +33,7 @@ import { ROLE } from "./constants";
 
 import styled from "styled-components";
 import { setIsLoading } from "./redux/actions/app/set-is-loading";
+import { useState } from "react";
 
 const AuthZoneApp = styled.div`
 	display: flex;
@@ -68,7 +69,6 @@ const AuthLayout = () => {
 		dispatch(loadAccountsAsync(request));
 		dispatch(loadAccountTypesAsync(request));
 		dispatch(loadOperationCategoriesAsync(request));
-		dispatch(loadOperationsAsync(request));
 		setIsLoading(false);
 	}, [dispatch, request]);
 

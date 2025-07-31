@@ -14,10 +14,10 @@ const userSchema = new Schema(
 			type: String,
 			default:
 				"https://www.manageengine.com/images/speaker-placeholder.png",
-			validate: {
-				validator: validator.isURL,
-				message: "Изображение должно иметь валидный URL",
-			},
+			// validate: {
+			// 	validator: validator.isURL,
+			// 	message: "Изображение должно иметь валидный URL",
+			// },
 		},
 		roleId: { type: Number, default: ROLE.USER },
 		isActive: { type: Boolean, default: true },

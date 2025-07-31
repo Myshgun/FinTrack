@@ -1,7 +1,8 @@
-import { Icon, Tag } from "../../../../components";
+import { useEffect, useState } from "react";
+import { Icon, Pagination, Tag } from "../../../../components";
+import { OPERATION } from "../../../../constants";
 
 import styled from "styled-components";
-import { OPERATION } from "../../../../constants";
 
 const StyledTable = styled.table`
 	width: 100%;
@@ -24,7 +25,7 @@ const StyledTable = styled.table`
 	}
 
 	tr:hover {
-		background-color: #5a6268;
+		background-color: #f5f5f5;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 `;
@@ -58,7 +59,23 @@ export const OperationsTableContainer = ({
 	className,
 	operations,
 	onDelete,
+	pagination,
+	onPageChange,
+	onLimitChange,
 }) => {
+	const [currentPage, setCurrentPage] = useState(1);
+
+	useEffect(() => {
+		if (pagination?.page) {
+			setCurrentPage(pagination.page);
+		}
+	}, [pagination?.page]);
+
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+		onPageChange(page);
+	};
+
 	if (!operations || operations.length === 0) {
 		return <NoDataMessage>Нет операций для отображения</NoDataMessage>;
 	}
@@ -116,6 +133,16 @@ export const OperationsTableContainer = ({
 					))}
 				</tbody>
 			</StyledTable>
+
+			{pagination && (
+				<Pagination
+					currentPage={currentPage}
+					totalPages={pagination.pages}
+					limit={pagination.limit}
+					onPageChange={handlePageChange}
+					onLimitChange={onLimitChange}
+				/>
+			)}
 		</div>
 	);
 };
