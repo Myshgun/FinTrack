@@ -8,4 +8,8 @@ module.exports = {
 		INCOME: "001",
 		OUTCOME: "002",
 	},
+	MESSAGE: {
+		USER_NOT_FOUND: "Пользователь не найден",
+		USER_BLOCKED: "Пользователь заблокирован",
+	},
 };

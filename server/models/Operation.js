@@ -4,7 +4,17 @@ const operationSchema = new Schema(
 	{
 		account: { type: Types.ObjectId, ref: "Account", required: true },
 		amount: { type: Number, required: true },
-		date: { type: Date, required: true },
+		date: {
+			type: Date,
+			required: true,
+			set: function (date) {
+				if (typeof date === "string") {
+					const [day, month, year] = date.split(".");
+					return new Date(year, month - 1, day);
+				}
+				return date;
+			},
+		},
 		category: {
 			type: Types.ObjectId,
 			ref: "OperationCategory",

@@ -5,6 +5,7 @@ import {
 	Accounts,
 	Authorization,
 	Dashboard,
+	ErrorPage,
 	Operations,
 	Panel,
 	Profile,
@@ -70,6 +71,14 @@ const AuthLayout = () => {
 		dispatch(loadOperationsAsync(request));
 		setIsLoading(false);
 	}, [dispatch, request]);
+
+	if (isLoading) {
+		return (
+			<AuthZoneApp>
+				<Loader />
+			</AuthZoneApp>
+		);
+	}
 
 	return (
 		<AuthZoneApp>
@@ -150,7 +159,7 @@ export const FinTrack = () => {
 						/>
 					</Route>
 
-					<Route path="*" element={<div>Ошибка</div>} />
+					<Route path="*" element={<ErrorPage />} />
 				</Routes>
 			</NonAuthZoneApp>
 		</>

@@ -1,33 +1,33 @@
-import { Chart } from "../../../../components";
+import { useCallback, useEffect, useState } from "react";
+import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
+import { useHttp } from "../../../../hooks";
 
 export const Savings = ({ className }) => {
-	const months = [
-		"Янв",
-		"Фев",
-		"Мар",
-		"Апр",
-		"Май",
-		"Июн",
-		"Июл",
-		"Авг",
-		"Сен",
-		"Окт",
-		"Ноя",
-		"Дек",
-	];
+	const [savingsData, setSavingsData] = useState(null);
+	const { request } = useHttp();
 
-	const savingsData = {
-		datasets: [
-			{
-				label: "Накопления",
-				data: [
-					125, 143, 168, 152, 175, 191, 208, 225, 243, 260, 278, 300,
-				],
-			},
-		],
-		labels: months,
-	};
+	const fetchSavingsData = useCallback(async () => {
+		try {
+			const data = await request("/analytics/savings");
+			console.log(data);
+			setSavingsData(data);
+		} catch (error) {
+			console.error("Ошибка при загрузке данных:", error.message);
+		}
+	}, [request]);
+
+	useEffect(() => {
+		fetchSavingsData();
+	}, [fetchSavingsData]);
+
+	if (!savingsData) {
+		return (
+			<Content className={className} title="Накопления" inside={true}>
+				<Loader />
+			</Content>
+		);
+	}
 
 	return (
 		<Content className={className} title="Накопления" inside={true}>
