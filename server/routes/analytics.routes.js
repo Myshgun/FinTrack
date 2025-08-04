@@ -7,6 +7,7 @@ const {
 	getExpensesByCategory,
 } = require("../controllers/exp-by-category.controller");
 const { getGrowthData } = require("../controllers/growth.controller");
+const { getBudgetData } = require("../controllers/budget.controller");
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.get("/incomes", auth, getIncomesData);
 router.get("/expenses", auth, getExpensesData);
 router.get("/expenses-by-category", auth, getExpensesByCategory);
 router.get("/growth", auth, getGrowthData);
+router.get("/budget", auth, getBudgetData);
 
 module.exports = router;
