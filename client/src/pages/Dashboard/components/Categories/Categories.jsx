@@ -36,8 +36,6 @@ export const Categories = ({ className }) => {
 		);
 	}
 
-	console.log(categoriesData.datasets);
-
 	return (
 		<Content
 			className={className}

@@ -39,8 +39,6 @@ export const Chart = ({
 		? "rgba(255, 255, 255, 0.1)"
 		: "rgba(0, 0, 0, 0.1)";
 
-	console.log(datasets);
-
 	const commonOptions = {
 		responsive: true,
 		maintainAspectRatio: false,

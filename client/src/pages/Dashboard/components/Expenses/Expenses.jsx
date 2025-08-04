@@ -33,8 +33,6 @@ export const Expenses = ({ className }) => {
 		);
 	}
 
-	console.log(expensesData);
-
 	return (
 		<Content className={className} title="Расходы" inside={true}>
 			<Chart
