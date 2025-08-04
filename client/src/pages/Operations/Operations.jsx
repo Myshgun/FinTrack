@@ -90,9 +90,8 @@ export const Operations = () => {
 			dispatch(setAlertMessage(message));
 			dispatch(SHOW_ALERT_MESSAGE);
 
-			dispatch(
-				loadOperationsAsync(request, { page: currentPage, limit })
-			);
+			setCurrentPage(1);
+			dispatch(loadOperationsAsync(request, { page: 1, limit }));
 		});
 	};
 
@@ -105,14 +104,13 @@ export const Operations = () => {
 			const newPages = Math.ceil(newTotal / limit);
 			const updatedPage = currentPage > newPages ? newPages : currentPage;
 
+			setCurrentPage(updatedPage || 1);
 			dispatch(
 				loadOperationsAsync(request, {
 					page: updatedPage || 1,
 					limit,
 				})
 			);
-
-			setCurrentPage(updatedPage || 1);
 		});
 	};
 

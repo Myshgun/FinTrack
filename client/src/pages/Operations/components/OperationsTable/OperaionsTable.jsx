@@ -125,7 +125,7 @@ export const OperationsTableContainer = ({
 									<Icon
 										id="fa-trash-o"
 										size="18px"
-										inactive={false}
+										$active={false}
 									/>
 								</DeleteButton>
 							</td>

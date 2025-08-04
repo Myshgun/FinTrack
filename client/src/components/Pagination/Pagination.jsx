@@ -11,15 +11,14 @@ const PaginationContainer = styled.div`
 const PageButton = styled.button`
 	padding: 8px 12px;
 	border: 1px solid #ddd;
-	background-color: ${({ inactive }) => (inactive ? "#007bff" : "white")};
-	color: ${({ inactive }) => (inactive ? "white" : "#333")};
+	background-color: ${({ $active }) => ($active ? "#007bff" : "white")};
+	color: ${({ $active }) => ($active ? "white" : "#333")};
 	cursor: pointer;
 	border-radius: 4px;
 	transition: all 0.3s;
 
 	&:hover {
-		background-color: ${({ inactive }) =>
-			inactive ? "#0069d9" : "#f1f1f1"};
+		background-color: ${({ $active }) => ($active ? "#0069d9" : "#f1f1f1")};
 	}
 
 	&:disabled {
@@ -61,7 +60,7 @@ export const Pagination = ({
 		pages.push(
 			<PageButton
 				key={i}
-				inactive={i === currentPage}
+				$active={i === currentPage}
 				onClick={() => onPageChange(i)}
 			>
 				{i}
