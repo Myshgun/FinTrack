@@ -32,8 +32,6 @@ export const Savings = ({ className }) => {
 		);
 	}
 
-	console.log(savingsData);
-
 	return (
 		<Content className={className} title="Накопления" inside={true}>
 			<Chart

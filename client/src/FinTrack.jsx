@@ -18,7 +18,6 @@ import {
 	loadAccountsAsync,
 	loadAccountTypesAsync,
 	loadOperationCategoriesAsync,
-	loadOperationsAsync,
 	setUserAsync,
 } from "./redux/actions";
 import {
@@ -33,7 +32,6 @@ import { ROLE } from "./constants";
 
 import styled from "styled-components";
 import { setIsLoading } from "./redux/actions/app/set-is-loading";
-import { useState } from "react";
 
 const AuthZoneApp = styled.div`
 	display: flex;

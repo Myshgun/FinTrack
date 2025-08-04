@@ -33,8 +33,6 @@ export const Incomes = ({ className }) => {
 		);
 	}
 
-	console.log(incomesData);
-
 	return (
 		<Content className={className} title="Доходы" inside={true}>
 			<Chart
