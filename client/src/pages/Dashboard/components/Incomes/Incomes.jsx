@@ -1,39 +1,45 @@
-import { Chart } from "../../../../components";
+import { useCallback, useEffect, useState } from "react";
+import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
+import { useHttp } from "../../../../hooks";
+import { useDispatch } from "react-redux";
+import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
 
 export const Incomes = ({ className }) => {
-	const months = [
-		"Янв",
-		"Фев",
-		"Мар",
-		"Апр",
-		"Май",
-		"Июн",
-		"Июл",
-		"Авг",
-		"Сен",
-		"Окт",
-		"Ноя",
-		"Дек",
-	];
+	const [incomesData, setIncomesData] = useState(null);
+	const { request } = useHttp();
+	const dispatch = useDispatch();
 
-	const incomeData = {
-		datasets: [
-			{
-				label: "Доходы",
-				data: [
-					120, 150, 180, 135, 210, 190, 220, 230, 200, 250, 240, 300,
-				],
-			},
-		],
-		labels: months,
-	};
+	const fetchIncomesData = useCallback(async () => {
+		try {
+			const data = await request("/analytics/incomes");
+
+			setIncomesData(data);
+		} catch (error) {
+			dispatch(setAlertMessage(error.message));
+			dispatch(SHOW_ALERT_MESSAGE);
+		}
+	}, [request, dispatch]);
+
+	useEffect(() => {
+		fetchIncomesData();
+	}, [fetchIncomesData]);
+
+	if (!incomesData) {
+		return (
+			<Content className={className} title="Доходы" inside={true}>
+				<Loader />
+			</Content>
+		);
+	}
+
+	console.log(incomesData);
 
 	return (
 		<Content className={className} title="Доходы" inside={true}>
 			<Chart
 				type="bar"
-				{...incomeData}
+				{...incomesData}
 				colors={["#94ffc9"]}
 				darkMode={true}
 				showLegend={false}

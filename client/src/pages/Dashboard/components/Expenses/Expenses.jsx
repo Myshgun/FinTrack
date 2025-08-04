@@ -1,40 +1,46 @@
-import { Chart } from "../../../../components";
+import { useCallback, useEffect, useState } from "react";
+import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
+import { useHttp } from "../../../../hooks";
+import { useDispatch } from "react-redux";
+import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
 
 export const Expenses = ({ className }) => {
-	const months = [
-		"Янв",
-		"Фев",
-		"Мар",
-		"Апр",
-		"Май",
-		"Июн",
-		"Июл",
-		"Авг",
-		"Сен",
-		"Окт",
-		"Ноя",
-		"Дек",
-	];
+	const [expensesData, setExpensesData] = useState(null);
+	const { request } = useHttp();
+	const dispatch = useDispatch();
 
-	const expenseData = {
-		datasets: [
-			{
-				label: "Расходы",
-				data: [
-					80, 95, 110, 100, 120, 115, 130, 125, 110, 140, 135, 160,
-				],
-			},
-		],
-		labels: months,
-	};
+	const fetchExpensesData = useCallback(async () => {
+		try {
+			const data = await request("/analytics/expenses");
+
+			setExpensesData(data);
+		} catch (error) {
+			dispatch(setAlertMessage(error.message));
+			dispatch(SHOW_ALERT_MESSAGE);
+		}
+	}, [request, dispatch]);
+
+	useEffect(() => {
+		fetchExpensesData();
+	}, [fetchExpensesData]);
+
+	if (!expensesData) {
+		return (
+			<Content className={className} title="Расходы" inside={true}>
+				<Loader />
+			</Content>
+		);
+	}
+
+	console.log(expensesData);
 
 	return (
 		<Content className={className} title="Расходы" inside={true}>
 			<Chart
 				type="bar"
-				{...expenseData}
-				colors={["#FF6384"]}
+				{...expensesData}
+				colors={["#ff6b6b"]}
 				darkMode={true}
 				showLegend={false}
 			/>

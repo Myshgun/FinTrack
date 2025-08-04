@@ -1,21 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
 import { useHttp } from "../../../../hooks";
+import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
 
 export const Savings = ({ className }) => {
 	const [savingsData, setSavingsData] = useState(null);
 	const { request } = useHttp();
+	const dispatch = useDispatch();
 
 	const fetchSavingsData = useCallback(async () => {
 		try {
 			const data = await request("/analytics/savings");
-			console.log(data);
 			setSavingsData(data);
 		} catch (error) {
-			console.error("Ошибка при загрузке данных:", error.message);
+			dispatch(setAlertMessage(error.message));
+			dispatch(SHOW_ALERT_MESSAGE);
 		}
-	}, [request]);
+	}, [request, dispatch]);
 
 	useEffect(() => {
 		fetchSavingsData();
@@ -28,6 +31,8 @@ export const Savings = ({ className }) => {
 			</Content>
 		);
 	}
+
+	console.log(savingsData);
 
 	return (
 		<Content className={className} title="Накопления" inside={true}>

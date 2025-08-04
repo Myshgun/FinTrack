@@ -1,7 +1,7 @@
 const { Types } = require("mongoose");
 
-const Account = require("../models/Account");
 const Operation = require("../models/Operation");
+const { DASHBOARD } = require("../constants/constants");
 
 const getSavingsData = async (req, res) => {
 	try {
@@ -80,20 +80,6 @@ const getSavingsData = async (req, res) => {
 			{ $sort: { _id: 1 } },
 		]);
 
-		const monthNames = [
-			"Янв",
-			"Фев",
-			"Мар",
-			"Апр",
-			"Май",
-			"Июн",
-			"Июл",
-			"Авг",
-			"Сен",
-			"Окт",
-			"Ноя",
-			"Дек",
-		];
 		const result = [];
 		let cumulative = startBalance;
 
@@ -104,7 +90,7 @@ const getSavingsData = async (req, res) => {
 		}
 
 		res.json({
-			labels: monthNames.slice(0, currentMonth + 1),
+			labels: DASHBOARD.MONTH_NAMES.slice(0, currentMonth + 1),
 			datasets: [
 				{
 					label: "Накопления",

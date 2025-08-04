@@ -12,4 +12,24 @@ module.exports = {
 		USER_NOT_FOUND: "Пользователь не найден",
 		USER_BLOCKED: "Пользователь заблокирован",
 	},
+	URL: {
+		DEFAULT_PROFILE_IMAGE:
+			"https://www.manageengine.com/images/speaker-placeholder.png",
+	},
+	DASHBOARD: {
+		MONTH_NAMES: [
+			"Янв",
+			"Фев",
+			"Мар",
+			"Апр",
+			"Май",
+			"Июн",
+			"Июл",
+			"Авг",
+			"Сен",
+			"Окт",
+			"Ноя",
+			"Дек",
+		],
+	},
 };

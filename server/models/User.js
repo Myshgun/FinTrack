@@ -1,5 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
-const { ROLE } = require("../constants/constants");
+const { ROLE, URL } = require("../constants/constants");
 const validator = require("validator");
 
 const userSchema = new Schema(
@@ -12,8 +12,7 @@ const userSchema = new Schema(
 		phoneNumber: { type: String, required: false, default: "" },
 		photoUrl: {
 			type: String,
-			default:
-				"https://www.manageengine.com/images/speaker-placeholder.png",
+			default: URL.DEFAULT_PROFILE_IMAGE,
 			// validate: {
 			// 	validator: validator.isURL,
 			// 	message: "Изображение должно иметь валидный URL",
