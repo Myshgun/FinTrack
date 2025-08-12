@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import { Content, Form, Pagination } from "../../components";
+import { OperationInfo, OperationsTable } from "./components";
+import { Content, Form } from "../../components";
 import { useHttp } from "../../hooks";
 import {
 	selectAccounts,
@@ -14,10 +16,9 @@ import {
 	loadOperationsAsync,
 	setAlertMessage,
 	SHOW_ALERT_MESSAGE,
+	removeOperationAsync,
 } from "../../redux/actions";
-import { removeOperationAsync } from "../../redux/actions";
-import { OperationsTable } from "./components";
-import { useState } from "react";
+import { getOperationById } from "./utils";
 
 export const Operations = () => {
 	const accounts = useSelector(selectAccounts);
@@ -30,6 +31,8 @@ export const Operations = () => {
 
 	const dispatch = useDispatch();
 	const { request } = useHttp();
+
+	const { id } = useParams();
 
 	useEffect(() => {
 		dispatch(loadOperationsAsync(request, { page: currentPage, limit }));
@@ -126,22 +129,30 @@ export const Operations = () => {
 	return (
 		<Content title="Операции">
 			<Content inside={true}>
-				<Form
-					fields={fieldsToAddOperationForm}
-					buttonText="Добавить операцию"
-					onSubmit={onAddOperation}
-					view="horizontal"
-				/>
-
-				<Content title="История операций" inside={true}>
-					<OperationsTable
-						operations={operations}
-						onDelete={onDeleteOperation}
-						pagination={pagination}
-						onPageChange={handlePageChange}
-						onLimitChange={handleLimitChange}
+				{id ? (
+					<OperationInfo
+						operation={getOperationById(operations, id)}
 					/>
-				</Content>
+				) : (
+					<>
+						<Form
+							fields={fieldsToAddOperationForm}
+							buttonText="Добавить операцию"
+							onSubmit={onAddOperation}
+							view="horizontal"
+						/>
+
+						<Content title="История операций" inside={true}>
+							<OperationsTable
+								operations={operations}
+								onDelete={onDeleteOperation}
+								pagination={pagination}
+								onPageChange={handlePageChange}
+								onLimitChange={handleLimitChange}
+							/>
+						</Content>
+					</>
+				)}
 			</Content>
 		</Content>
 	);
