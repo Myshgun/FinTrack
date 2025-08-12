@@ -12,6 +12,8 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+app.use(express.static("../client/dist"));
+
 app.use(corsMiddleware);
 app.use(express.json({ extended: true }));
 app.use(cookieParser());
