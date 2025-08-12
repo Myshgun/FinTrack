@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.static("../client/dist"));
+app.use("/fonts", express.static("../client/dist/fonts"));
 
 app.use(corsMiddleware);
 app.use(express.json({ extended: true }));
