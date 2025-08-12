@@ -5,38 +5,49 @@ const PaginationContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	margin-top: 20px;
-	gap: 10px;
+	gap: 8px;
+	background-color: #20222f;
+	padding: 12px;
+	border-radius: 8px;
+	border: 1px solid #44475a;
 `;
 
 const PageButton = styled.button`
 	padding: 8px 12px;
-	border: 1px solid #ddd;
-	background-color: ${({ $active }) => ($active ? "#007bff" : "white")};
-	color: ${({ $active }) => ($active ? "white" : "#333")};
+	border: 1px solid #44475a;
+	background-color: ${({ $active }) => ($active ? "#3b3e58" : "#2a2d3e")};
+	color: #f0f0f0;
 	cursor: pointer;
 	border-radius: 4px;
 	transition: all 0.3s;
+	font-size: 14px;
+	min-width: 36px;
 
 	&:hover {
-		background-color: ${({ $active }) => ($active ? "#0069d9" : "#f1f1f1")};
+		background-color: ${({ $active }) => ($active ? "#4a4d68" : "#3b3e58")};
 	}
 
 	&:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
+		background-color: #2a2d3e;
 	}
 `;
 
 const LimitSelector = styled.select`
 	padding: 8px;
 	border-radius: 4px;
-	border: 1px solid #ddd;
+	border: 1px solid #44475a;
 	margin-left: 20px;
+	background-color: #2a2d3e;
+	color: #f0f0f0;
+	font-size: 14px;
 `;
 
 const PaginationInfo = styled.span`
 	margin-left: 10px;
-	color: #666;
+	color: #a0a0a0;
+	font-size: 14px;
 `;
 
 export const Pagination = ({
