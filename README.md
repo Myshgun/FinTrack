@@ -121,4 +121,4 @@ fintrack/
 
 ---
 
-Разработано с ❤️ Myshgun | [https://github.com/Myshgun]
+Разработано на 💻 Myshgun | [https://github.com/Myshgun]
