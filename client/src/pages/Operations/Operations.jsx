@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import { Content, Form, Pagination } from "../../components";
+import { Content, Form } from "../../components";
+import { OperationsTable } from "./components";
 import { useHttp } from "../../hooks";
 import {
 	selectAccounts,
 	selectOperationCategories,
-	selectOperations,
 	selectOperationsPagination,
 } from "../../redux/selectors";
 import {
@@ -15,14 +15,10 @@ import {
 	setAlertMessage,
 	SHOW_ALERT_MESSAGE,
 } from "../../redux/actions";
-import { removeOperationAsync } from "../../redux/actions";
-import { OperationsTable } from "./components";
-import { useState } from "react";
 
 export const Operations = () => {
 	const accounts = useSelector(selectAccounts);
 	const categoriesOfOperation = useSelector(selectOperationCategories);
-	const operations = useSelector(selectOperations);
 	const pagination = useSelector(selectOperationsPagination);
 
 	const [currentPage, setCurrentPage] = useState(pagination.page);
@@ -30,10 +26,6 @@ export const Operations = () => {
 
 	const dispatch = useDispatch();
 	const { request } = useHttp();
-
-	useEffect(() => {
-		dispatch(loadOperationsAsync(request, { page: currentPage, limit }));
-	}, [dispatch, request, currentPage, limit]);
 
 	const fieldsToAddOperationForm = [
 		{
@@ -95,34 +87,6 @@ export const Operations = () => {
 		});
 	};
 
-	const onDeleteOperation = (id) => {
-		dispatch(removeOperationAsync(request, id)).then((message) => {
-			dispatch(setAlertMessage(message));
-			dispatch(SHOW_ALERT_MESSAGE);
-
-			const newTotal = pagination.total - 1;
-			const newPages = Math.ceil(newTotal / limit);
-			const updatedPage = currentPage > newPages ? newPages : currentPage;
-
-			setCurrentPage(updatedPage || 1);
-			dispatch(
-				loadOperationsAsync(request, {
-					page: updatedPage || 1,
-					limit,
-				})
-			);
-		});
-	};
-
-	const handlePageChange = (page) => {
-		setCurrentPage(page);
-	};
-
-	const handleLimitChange = (newLimit) => {
-		setLimit(newLimit);
-		setCurrentPage(1);
-	};
-
 	return (
 		<Content title="Операции">
 			<Content inside={true}>
@@ -135,11 +99,10 @@ export const Operations = () => {
 
 				<Content title="История операций" inside={true}>
 					<OperationsTable
-						operations={operations}
-						onDelete={onDeleteOperation}
-						pagination={pagination}
-						onPageChange={handlePageChange}
-						onLimitChange={handleLimitChange}
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
+						limit={limit}
+						setLimit={setLimit}
 					/>
 				</Content>
 			</Content>

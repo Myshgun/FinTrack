@@ -3,6 +3,18 @@ import { Icon, Pagination, Tag } from "../../../../components";
 import { OPERATION } from "../../../../constants";
 
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	loadOperationsAsync,
+	removeOperationAsync,
+	setAlertMessage,
+	SHOW_ALERT_MESSAGE,
+} from "../../../../redux/actions";
+import { useHttp } from "../../../../hooks";
+import {
+	selectOperations,
+	selectOperationsPagination,
+} from "../../../../redux/selectors";
 
 const StyledTable = styled.table`
 	width: 100%;
@@ -57,23 +69,55 @@ const NoDataMessage = styled.p`
 
 export const OperationsTableContainer = ({
 	className,
-	operations,
-	onDelete,
-	pagination,
-	onPageChange,
-	onLimitChange,
+	currentPage,
+	setCurrentPage,
+	limit,
+	setLimit,
 }) => {
-	const [currentPage, setCurrentPage] = useState(1);
+	const operations = useSelector(selectOperations);
+	const pagination = useSelector(selectOperationsPagination);
+
+	const dispatch = useDispatch();
+	const { request } = useHttp();
 
 	useEffect(() => {
 		if (pagination?.page) {
 			setCurrentPage(pagination.page);
 		}
-	}, [pagination?.page]);
+	}, [pagination?.page, setCurrentPage]);
 
-	const handlePageChange = (page) => {
+	useEffect(() => {
+		dispatch(loadOperationsAsync(request, { page: currentPage, limit }));
+	}, [dispatch, request, currentPage, limit]);
+
+	const onDelete = (id) => {
+		dispatch(removeOperationAsync(request, id)).then((message) => {
+			dispatch(setAlertMessage(message));
+			dispatch(SHOW_ALERT_MESSAGE);
+
+			const newTotal = pagination.total - 1;
+			const newPages = Math.ceil(newTotal / limit);
+			const updatedPage = currentPage > newPages ? newPages : currentPage;
+
+			setCurrentPage(updatedPage || 1);
+
+			dispatch(
+				loadOperationsAsync(request, {
+					page: updatedPage || 1,
+					limit,
+				})
+			);
+		});
+	};
+
+	const onPageChange = (page) => {
 		setCurrentPage(page);
 		onPageChange(page);
+	};
+
+	const onLimitChange = (newLimit) => {
+		setLimit(newLimit);
+		setCurrentPage(1);
 	};
 
 	if (!operations || operations.length === 0) {
@@ -139,7 +183,7 @@ export const OperationsTableContainer = ({
 					currentPage={currentPage}
 					totalPages={pagination.pages}
 					limit={pagination.limit}
-					onPageChange={handlePageChange}
+					onPageChange={onPageChange}
 					onLimitChange={onLimitChange}
 				/>
 			)}
