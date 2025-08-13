@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import { Content, Form } from "../../components";
@@ -8,6 +8,7 @@ import { useHttp } from "../../hooks";
 import {
 	selectAccounts,
 	selectOperationCategories,
+	selectOperations,
 	selectOperationsPagination,
 } from "../../redux/selectors";
 import {
@@ -15,14 +16,13 @@ import {
 	loadOperationsAsync,
 	setAlertMessage,
 	SHOW_ALERT_MESSAGE,
-	removeOperationAsync,
 } from "../../redux/actions";
 import { getOperationById } from "./utils";
-
 
 export const Operations = () => {
 	const accounts = useSelector(selectAccounts);
 	const categoriesOfOperation = useSelector(selectOperationCategories);
+	const operations = useSelector(selectOperations);
 	const pagination = useSelector(selectOperationsPagination);
 
 	const [currentPage, setCurrentPage] = useState(pagination.page);
@@ -32,7 +32,7 @@ export const Operations = () => {
 	const { request } = useHttp();
 
 	const { id } = useParams();
-  
+
 	const fieldsToAddOperationForm = [
 		{
 			name: "account",
@@ -99,7 +99,6 @@ export const Operations = () => {
 				{id ? (
 					<OperationInfo
 						operation={getOperationById(operations, id)}
-
 					/>
 				) : (
 					<>
@@ -113,9 +112,9 @@ export const Operations = () => {
 						<Content title="История операций" inside={true}>
 							<OperationsTable
 								currentPage={currentPage}
-						    setCurrentPage={setCurrentPage}
-						    limit={limit}
-						    setLimit={setLimit}
+								setCurrentPage={setCurrentPage}
+								limit={limit}
+								setLimit={setLimit}
 							/>
 						</Content>
 					</>
