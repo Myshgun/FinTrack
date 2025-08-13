@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import { Content, Form } from "../../components";
-import { OperationsTable } from "./components";
+import { OperationInfo, OperationsTable } from "./components";
 import { useHttp } from "../../hooks";
 import {
 	selectAccounts,
@@ -14,7 +15,10 @@ import {
 	loadOperationsAsync,
 	setAlertMessage,
 	SHOW_ALERT_MESSAGE,
+	removeOperationAsync,
 } from "../../redux/actions";
+import { getOperationById } from "./utils";
+
 
 export const Operations = () => {
 	const accounts = useSelector(selectAccounts);
@@ -27,6 +31,8 @@ export const Operations = () => {
 	const dispatch = useDispatch();
 	const { request } = useHttp();
 
+	const { id } = useParams();
+  
 	const fieldsToAddOperationForm = [
 		{
 			name: "account",
@@ -90,21 +96,30 @@ export const Operations = () => {
 	return (
 		<Content title="Операции">
 			<Content inside={true}>
-				<Form
-					fields={fieldsToAddOperationForm}
-					buttonText="Добавить операцию"
-					onSubmit={onAddOperation}
-					view="horizontal"
-				/>
+				{id ? (
+					<OperationInfo
+						operation={getOperationById(operations, id)}
 
-				<Content title="История операций" inside={true}>
-					<OperationsTable
-						currentPage={currentPage}
-						setCurrentPage={setCurrentPage}
-						limit={limit}
-						setLimit={setLimit}
 					/>
-				</Content>
+				) : (
+					<>
+						<Form
+							fields={fieldsToAddOperationForm}
+							buttonText="Добавить операцию"
+							onSubmit={onAddOperation}
+							view="horizontal"
+						/>
+
+						<Content title="История операций" inside={true}>
+							<OperationsTable
+								currentPage={currentPage}
+						    setCurrentPage={setCurrentPage}
+						    limit={limit}
+						    setLimit={setLimit}
+							/>
+						</Content>
+					</>
+				)}
 			</Content>
 		</Content>
 	);

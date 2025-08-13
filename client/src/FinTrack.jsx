@@ -146,6 +146,10 @@ export const FinTrack = () => {
 					>
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/operations" element={<Operations />} />
+						<Route
+							path="/operations/:id"
+							element={<Operations />}
+						/>
 						<Route path="/accounts" element={<Accounts />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/profile/edit" element={<Profile />} />

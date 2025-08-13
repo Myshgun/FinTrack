@@ -1,6 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
 const { ROLE, URL } = require("../constants/constants");
-const validator = require("validator");
 
 const userSchema = new Schema(
 	{
@@ -13,10 +12,6 @@ const userSchema = new Schema(
 		photoUrl: {
 			type: String,
 			default: URL.DEFAULT_PROFILE_IMAGE,
-			// validate: {
-			// 	validator: validator.isURL,
-			// 	message: "Изображение должно иметь валидный URL",
-			// },
 		},
 		roleId: { type: Number, default: ROLE.USER },
 		isActive: { type: Boolean, default: true },

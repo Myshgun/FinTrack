@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Icon, Pagination, Tag } from "../../../../components";
 import { OPERATION } from "../../../../constants";
 
@@ -37,21 +38,38 @@ const StyledTable = styled.table`
 	}
 
 	tr:hover {
+		color: #555;
 		background-color: #f5f5f5;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 `;
 
-const DeleteButton = styled.button`
+const ActionButton = styled.button`
 	background: transparent;
 	border: none;
-	color: #c0392b;
 	padding: 5px;
 	transition: color 0.3s ease;
+	margin: 0 2px;
+
+	&:hover {
+		cursor: pointer;
+		opacity: 0.8;
+	}
+`;
+
+const InfoButton = styled(ActionButton)`
+	color: #2980b9;
+
+	&:hover {
+		color: #3498db;
+	}
+`;
+
+const DeleteButton = styled(ActionButton)`
+	color: #c0392b;
 
 	&:hover {
 		color: #e74c3c;
-		cursor: pointer;
 	}
 `;
 
@@ -79,6 +97,8 @@ export const OperationsTableContainer = ({
 
 	const dispatch = useDispatch();
 	const { request } = useHttp();
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (pagination?.page) {
@@ -134,7 +154,7 @@ export const OperationsTableContainer = ({
 						<th>Сумма</th>
 						<th>Категория</th>
 						<th>Описание</th>
-						<th></th>
+						<th>Действия</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -162,6 +182,18 @@ export const OperationsTableContainer = ({
 							</td>
 							<td>{operation.description || "-"}</td>
 							<td>
+								<InfoButton
+									title="Подробнее"
+									onClick={() =>
+										navigate(`/operations/${operation.id}`)
+									}
+								>
+									<Icon
+										id="fa-info-circle"
+										size="18px"
+										$active={false}
+									/>
+								</InfoButton>
 								<DeleteButton
 									onClick={() => onDelete(operation.id)}
 									title="Удалить операцию"

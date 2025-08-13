@@ -66,7 +66,10 @@ const ProfileConentContainer = ({ className }) => {
 				</div>
 			</div>
 			<div className="registered-at-block">
-				Дата регистрации <InfoBlock>{createdAt}</InfoBlock>
+				Дата регистрации{" "}
+				<InfoBlock>
+					{new Date(createdAt).toLocaleDateString()}
+				</InfoBlock>
 			</div>
 		</div>
 	);
