@@ -1,14 +1,8 @@
-import { setAccountsData } from "../accounts";
-import { setOperationsData } from "./set-operations-data";
-
-export const removeOperationAsync = (request, id) => async (dispatch) => {
+export const removeOperationAsync = (request, id) => async () => {
 	try {
-		const data = await request(`/operations/${id}`, "DELETE");
+		const { message } = await request(`/operations/${id}`, "DELETE");
 
-		dispatch(setOperationsData(data.operations));
-		dispatch(setAccountsData(data.accounts));
-
-		return data.message;
+		return message;
 	} catch (error) {
 		// Ошибка загрузки данных
 	}
