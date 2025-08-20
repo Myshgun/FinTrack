@@ -27,5 +27,5 @@ export const useAuth = () => {
 		}
 	}, [login, request, dispatch]);
 
-	return { login, checkAuth };
+	return { checkAuth };
 };

@@ -14,7 +14,7 @@ import {
 import {
 	addOperationAsync,
 	loadOperationsAsync,
-	setAlertMessage,
+	setAlert,
 	SHOW_ALERT_MESSAGE,
 } from "../../redux/actions";
 import { getOperationById } from "./utils";
@@ -85,7 +85,7 @@ export const Operations = () => {
 				amount: parseFloat(data.amount),
 			})
 		).then((message) => {
-			dispatch(setAlertMessage(message));
+			dispatch(setAlert(message));
 			dispatch(SHOW_ALERT_MESSAGE);
 
 			setCurrentPage(1);

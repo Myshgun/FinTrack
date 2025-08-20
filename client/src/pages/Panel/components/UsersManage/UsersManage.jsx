@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Content, Table, Tag } from "../../../../components";
 import { useHttp } from "../../../../hooks";
 import { useDispatch } from "react-redux";
-import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
+import { setAlert, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
 
 import styled from "styled-components";
 
@@ -37,7 +37,7 @@ export const UsersManage = () => {
 
 		if (data) {
 			if (data.message) {
-				dispatch(setAlertMessage(data.message));
+				dispatch(setAlert(data.message));
 				dispatch(SHOW_ALERT_MESSAGE);
 			}
 

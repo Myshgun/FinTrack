@@ -18,6 +18,7 @@ import {
 	loadAccountsAsync,
 	loadAccountTypesAsync,
 	loadOperationCategoriesAsync,
+	setIsLoading,
 	setUserAsync,
 } from "./redux/actions";
 import {
@@ -31,7 +32,6 @@ import {
 import { ROLE } from "./constants";
 
 import styled from "styled-components";
-import { setIsLoading } from "./redux/actions/app/set-is-loading";
 
 const AuthZoneApp = styled.div`
 	display: flex;
@@ -54,8 +54,6 @@ const MainApp = styled.div`
 `;
 
 const AuthLayout = () => {
-	const isAlertVisible = useSelector(selectIsAlertVisible);
-	const alertMessage = useSelector(selectAlertMessage);
 	const isLoading = useSelector(selectIsLoading);
 
 	const { request } = useHttp();
@@ -86,11 +84,6 @@ const AuthLayout = () => {
 					<Outlet />
 				</MainApp>
 			)}
-			{isAlertVisible && (
-				<Alert type="success" duration={2000}>
-					{alertMessage}
-				</Alert>
-			)}
 		</AuthZoneApp>
 	);
 };
@@ -107,6 +100,9 @@ const NonAuthZoneApp = styled.div`
 `;
 
 export const FinTrack = () => {
+	const isAlertVisible = useSelector(selectIsAlertVisible);
+	const alertMessage = useSelector(selectAlertMessage);
+
 	const isAuthenticated = useSelector(selectAuthIsAuth);
 	const isAuthChecked = useSelector(selectIsAuthChecked);
 	const role = useSelector(selectUserRole);
@@ -164,6 +160,7 @@ export const FinTrack = () => {
 					<Route path="*" element={<ErrorPage />} />
 				</Routes>
 			</NonAuthZoneApp>
+			{isAlertVisible && <Alert duration={2000}>{alertMessage}</Alert>}
 		</>
 	);
 };

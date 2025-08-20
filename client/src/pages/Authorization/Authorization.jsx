@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthFormError, Button, Input } from "../../components";
-import { useAuth, useHttp } from "../../hooks";
-import { setUser } from "../../redux/actions";
+import { useHttp } from "../../hooks";
+import { authorizeAsync } from "../../redux/actions";
 import { selectUserRole } from "../../redux/selectors";
 import { ROLE } from "../../constants";
 
@@ -42,36 +41,15 @@ const AuthorizationContainer = ({ className }) => {
 	});
 
 	const roleId = useSelector(selectUserRole);
-	const [serverError, setServerError] = useState(null);
 
 	const { request } = useHttp();
-	const { login } = useAuth();
 	const dispatch = useDispatch();
 
 	const onSubmit = async ({ email, password }) => {
-		try {
-			const { user } = await request("/auth/login", "POST", {
-				email,
-				password,
-			});
-
-			if (!user) {
-				setServerError(
-					"Произошла ошибка при авторизации. Попробуйте еще раз"
-				);
-				return;
-			}
-
-			login(user.id);
-			dispatch(setUser(user));
-		} catch (error) {
-			setServerError(error);
-			return;
-		}
+		dispatch(authorizeAsync(request, { email, password }));
 	};
 
 	const formError = errors?.email?.message || errors?.password?.message;
-	const errorMessage = formError || serverError;
 
 	if (roleId === ROLE.USER) {
 		return <Navigate to="/dashboard" />;
@@ -88,24 +66,18 @@ const AuthorizationContainer = ({ className }) => {
 				<Input
 					name="email"
 					type="text"
-					{...register("email", {
-						onChange: () => setServerError(null),
-					})}
-				>
-					Почта
-				</Input>
+					label="Почта"
+					{...register("email")}
+				/>
 				<Input
 					name="password"
 					type="password"
-					{...register("password", {
-						onChange: () => setServerError(null),
-					})}
-				>
-					Пароль
-				</Input>
+					label="Пароль"
+					{...register("password")}
+				/>
 				<Button disabled={!!formError}>Авторизоваться</Button>
 				<StyledLink to="/register">Зарегистрироваться</StyledLink>
-				{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
+				{formError && <AuthFormError>{formError}</AuthFormError>}
 			</form>
 		</div>
 	);

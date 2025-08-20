@@ -4,6 +4,7 @@ const initialAppState = {
 	isAlertVisible: false,
 	alertMessage: "",
 	isLoading: false,
+	alertType: "",
 };
 
 export const appReducer = (state = initialAppState, action) => {
@@ -18,10 +19,11 @@ export const appReducer = (state = initialAppState, action) => {
 				...state,
 				isAlertVisible: false,
 			};
-		case ACTION_TYPE.SET_ALERT_MESSAGE:
+		case ACTION_TYPE.SET_ALERT:
 			return {
 				...state,
-				alertMessage: action.payload,
+				alertMessage: action.payload.message,
+				alertType: action.payload.type,
 			};
 		case ACTION_TYPE.SET_IS_LOADING:
 			return {

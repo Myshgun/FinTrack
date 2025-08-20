@@ -1,23 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
 import { useHttp } from "../../../../hooks";
-import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
+import { loadSavingsDataAsync } from "../../../../redux/actions";
+import { selectAnalyticsSavings } from "../../../../redux/selectors";
 
 export const Savings = ({ className }) => {
-	const [savingsData, setSavingsData] = useState(null);
+	const savingsData = useSelector(selectAnalyticsSavings);
+
 	const { request } = useHttp();
 	const dispatch = useDispatch();
 
 	const fetchSavingsData = useCallback(async () => {
-		try {
-			const data = await request("/analytics/savings");
-			setSavingsData(data);
-		} catch (error) {
-			dispatch(setAlertMessage(error.message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		}
+		dispatch(loadSavingsDataAsync(request));
 	}, [request, dispatch]);
 
 	useEffect(() => {

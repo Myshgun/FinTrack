@@ -6,11 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthFormError, Icon, Input } from "../../../../components";
 import { useHttp } from "../../../../hooks";
-import {
-	setAlertMessage,
-	SHOW_ALERT_MESSAGE,
-	updateProfileAsync,
-} from "../../../../redux/actions";
+import { updateProfileAsync } from "../../../../redux/actions";
 import { selectUser } from "../../../../redux/selectors";
 
 import styled from "styled-components";
@@ -84,47 +80,44 @@ const ProfileFormContainer = ({ className }) => {
 				id,
 				...formData,
 			})
-		).then((message) => {
-			dispatch(setAlertMessage(message));
-			dispatch(SHOW_ALERT_MESSAGE);
-			navigate(`/profile`);
-		});
+		);
+		navigate(`/profile`);
 	};
 
 	return (
 		<form className={className} onSubmit={handleSubmit(onSave)}>
 			<div className="main-block">
 				<div className="info-block">
-					<Input name="photo" type="url" {...register("photoUrl")}>
-						Изображение
-					</Input>
+					<Input
+						name="photo"
+						type="url"
+						label="Изображение"
+						{...register("photoUrl")}
+					/>
 					<Input
 						name="lastName"
 						type="text"
+						label="Фамилия"
 						{...register("lastName", {
 							onChange: () => setServerError(null),
 						})}
-					>
-						Фамилия
-					</Input>
+					/>
 					<Input
 						name="firstName"
 						type="text"
+						label="Имя"
 						{...register("firstName", {
 							onChange: () => setServerError(null),
 						})}
-					>
-						Имя
-					</Input>
+					/>
 					<Input
 						name="middleName"
 						type="text"
+						label="Отчество"
 						{...register("middleName", {
 							onChange: () => setServerError(null),
 						})}
-					>
-						Отчество
-					</Input>
+					/>
 				</div>
 				<StyledButton type="submit">
 					<Icon id="fa-floppy-o" size="30px" inactive={false} />
@@ -134,21 +127,19 @@ const ProfileFormContainer = ({ className }) => {
 				<Input
 					name="email"
 					type="email"
+					label="Email"
 					{...register("email", {
 						onChange: () => setServerError(null),
 					})}
-				>
-					Email
-				</Input>
+				/>
 				<Input
 					name="phoneNumber"
 					type="tel"
+					label="Телефон"
 					{...register("phoneNumber", {
 						onChange: () => setServerError(null),
 					})}
-				>
-					Телефон
-				</Input>
+				/>
 			</div>
 			{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
 		</form>

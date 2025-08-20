@@ -11,6 +11,8 @@ const initialUserState = {
 	phoneNumber: "",
 	registeredAt: "",
 	photoUrl: "",
+
+	isLoading: false,
 };
 
 export const userReducer = (state = initialUserState, action) => {
@@ -20,6 +22,8 @@ export const userReducer = (state = initialUserState, action) => {
 				...state,
 				...action.payload,
 			};
+		case ACTION_TYPE.SET_USER_LOADING:
+			return { ...state, isLoading: action.payload };
 		case ACTION_TYPE.LOGOUT:
 			return initialUserState;
 		default:

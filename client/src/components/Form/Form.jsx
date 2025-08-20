@@ -49,12 +49,11 @@ const FormContainer = ({ className, fields, buttonText, onSubmit, view }) => {
 						type={type}
 						as={as}
 						options={options}
+						label={label}
 						{...register(name, {
 							onChange: () => setServerError(null),
 						})}
-					>
-						{label}
-					</Input>
+					/>
 				))}
 				<StyledButton type="submit" style="success" view={view}>
 					{buttonText}

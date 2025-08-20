@@ -1,24 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
 import { useHttp } from "../../../../hooks";
-import { useDispatch } from "react-redux";
-import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { loadIncomesDataAsync } from "../../../../redux/actions";
+import { selectAnalyticsIncomes } from "../../../../redux/selectors";
 
 export const Incomes = ({ className }) => {
-	const [incomesData, setIncomesData] = useState(null);
+	const incomesData = useSelector(selectAnalyticsIncomes);
 	const { request } = useHttp();
 	const dispatch = useDispatch();
 
 	const fetchIncomesData = useCallback(async () => {
-		try {
-			const data = await request("/analytics/incomes");
-
-			setIncomesData(data);
-		} catch (error) {
-			dispatch(setAlertMessage(error.message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		}
+		dispatch(loadIncomesDataAsync(request));
 	}, [request, dispatch]);
 
 	useEffect(() => {

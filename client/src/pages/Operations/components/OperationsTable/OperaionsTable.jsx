@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon, Pagination, Tag } from "../../../../components";
 import { OPERATION } from "../../../../constants";
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	loadOperationsAsync,
 	removeOperationAsync,
-	setAlertMessage,
+	setAlert,
 	SHOW_ALERT_MESSAGE,
 } from "../../../../redux/actions";
 import { useHttp } from "../../../../hooks";
@@ -112,7 +112,7 @@ export const OperationsTableContainer = ({
 
 	const onDelete = (id) => {
 		dispatch(removeOperationAsync(request, id)).then((message) => {
-			dispatch(setAlertMessage(message));
+			dispatch(setAlert(message));
 			dispatch(SHOW_ALERT_MESSAGE);
 
 			const newTotal = pagination.total - 1;

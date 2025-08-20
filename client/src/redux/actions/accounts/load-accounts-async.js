@@ -1,12 +1,25 @@
+import { APP } from "../../../constants";
+import { setAlert, SHOW_ALERT_MESSAGE } from "../app";
 import { setAccountsData } from "./set-accounts-data";
+import { setAccountsLoading } from "./set-accounts-loading";
 
 export const loadAccountsAsync = (request) => async (dispatch) => {
 	try {
-		const data = await request(`/accounts`);
-		dispatch(setAccountsData(data.accounts));
+		dispatch(setAccountsLoading(true));
+
+		const data = await request("/accounts");
+
+		dispatch(setAccountsData(data));
+
 		return data.message;
 	} catch (error) {
-		// Ошибка загрузки пользовательских данных
-		// Экшен для выхода из приложения
+		const errorMessage = error || "Ошибка загрузки данных о счетах";
+
+		dispatch(setAlert(errorMessage, APP.ALERT_ERROR));
+		dispatch(SHOW_ALERT_MESSAGE);
+
+		throw error;
+	} finally {
+		dispatch(setAccountsLoading(false));
 	}
 };

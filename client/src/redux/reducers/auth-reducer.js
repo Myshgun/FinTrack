@@ -4,6 +4,7 @@ const initialAuthState = {
 	userId: null,
 	isAuthenticated: false,
 	isAuthChecked: false,
+	isLoading: false,
 };
 
 export const authReducer = (state = initialAuthState, action) => {
@@ -14,6 +15,7 @@ export const authReducer = (state = initialAuthState, action) => {
 				userId: action.payload,
 				isAuthenticated: true,
 				isAuthChecked: true,
+				isLoading: false,
 			};
 		case ACTION_TYPE.SET_AUTH_CHECKED:
 			return {
@@ -21,7 +23,15 @@ export const authReducer = (state = initialAuthState, action) => {
 				isAuthChecked: true,
 			};
 		case ACTION_TYPE.LOGOUT:
-			return initialAuthState;
+			return {
+				...initialAuthState,
+				isAuthChecked: true,
+			};
+		case ACTION_TYPE.SET_AUTH_LOADING:
+			return {
+				...state,
+				isLoading: action.payload,
+			};
 		default:
 			return state;
 	}

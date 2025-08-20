@@ -1,23 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
 import { useHttp } from "../../../../hooks";
-import { useDispatch } from "react-redux";
-import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { loadGrowthDataAsync } from "../../../../redux/actions";
+import { selectAnalyticsGrowth } from "../../../../redux/selectors";
 
 export const Growth = ({ className }) => {
-	const [growthData, setGrowthData] = useState(null);
+	const growthData = useSelector(selectAnalyticsGrowth);
 	const { request } = useHttp();
 	const dispatch = useDispatch();
 
 	const fetchGrowthData = useCallback(async () => {
-		try {
-			const data = await request("/analytics/growth");
-			setGrowthData(data);
-		} catch (error) {
-			dispatch(setAlertMessage(error.message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		}
+		dispatch(loadGrowthDataAsync(request));
 	}, [request, dispatch]);
 
 	useEffect(() => {

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHttp } from "../../../../hooks";
 import {
 	removeAccountAsync,
-	setAlertMessage,
+	setAlert,
 	SHOW_ALERT_MESSAGE,
 } from "../../../../redux/actions";
 
@@ -15,7 +15,7 @@ const AccountCardContainer = ({ className, account }) => {
 
 	const onDelete = (id) => {
 		dispatch(removeAccountAsync(request, id)).then((message) => {
-			dispatch(setAlertMessage(message));
+			dispatch(setAlert(message));
 			dispatch(SHOW_ALERT_MESSAGE);
 		});
 	};

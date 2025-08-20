@@ -2,8 +2,6 @@ import * as yup from "yup";
 import { Button, Content, Form, Table, Tag } from "../../../../components";
 import {
 	addOperationCategoryAsync,
-	setAlertMessage,
-	SHOW_ALERT_MESSAGE,
 	toggleOperationCategoryActiveAsync,
 } from "../../../../redux/actions";
 import { useHttp } from "../../../../hooks";
@@ -66,23 +64,11 @@ export const OperationsManage = () => {
 	const dispatch = useDispatch();
 
 	const onAddOperationCategory = (data) => {
-		dispatch(
-			addOperationCategoryAsync(request, {
-				...data,
-			})
-		).then((message) => {
-			dispatch(setAlertMessage(message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		});
+		dispatch(addOperationCategoryAsync(request, { ...data }));
 	};
 
 	const onToggleActive = (id) => {
-		dispatch(toggleOperationCategoryActiveAsync(request, id)).then(
-			(message) => {
-				dispatch(setAlertMessage(message));
-				dispatch(SHOW_ALERT_MESSAGE);
-			}
-		);
+		dispatch(toggleOperationCategoryActiveAsync(request, id));
 	};
 
 	const columns = [

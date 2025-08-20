@@ -8,3 +8,5 @@ export * from "./account-types-reducer";
 
 export * from "./operations-reducer";
 export * from "./operation-categories-reducer";
+
+export * from "./analytics-reducer";

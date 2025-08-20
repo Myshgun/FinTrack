@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthFormError, Button, Input } from "../../components";
 import { useHttp } from "../../hooks";
+import { registerAsync } from "../../redux/actions";
 
 import styled from "styled-components";
 
@@ -39,30 +40,18 @@ const RegistrationPageContainer = ({ className }) => {
 	});
 
 	const { request } = useHttp();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const [serverError, setServerError] = useState(null);
-
 	const onSubmit = async ({ email, password }) => {
-		try {
-			const data = await request("/auth/register", "POST", {
-				email,
-				password,
-			});
-			if (data) {
-				navigate("/login");
-			}
-		} catch (error) {
-			setServerError(error);
-			return;
-		}
+		dispatch(registerAsync(request, { email, password }));
+		navigate("/login");
 	};
 
 	const formError =
 		errors?.email?.message ||
 		errors?.password?.message ||
 		errors?.passcheck?.message;
-	const errorMessage = formError || serverError;
 
 	return (
 		<div className={className}>
@@ -71,32 +60,23 @@ const RegistrationPageContainer = ({ className }) => {
 				<Input
 					name="email"
 					type="text"
-					{...register("email", {
-						onChange: () => setServerError(null),
-					})}
-				>
-					Почта
-				</Input>
+					{...register("email")}
+					label="Почта"
+				/>
 				<Input
 					name="password"
 					type="password"
-					{...register("password", {
-						onChange: () => setServerError(null),
-					})}
-				>
-					Пароль
-				</Input>
+					label="Пароль"
+					{...register("password")}
+				/>
 				<Input
 					name="passcheck"
 					type="password"
-					{...register("passcheck", {
-						onChange: () => setServerError(null),
-					})}
-				>
-					Повтор пароля
-				</Input>
+					label="Повтор пароля"
+					{...register("passcheck")}
+				/>
 				<Button disabled={!!formError}>Зарегистрироваться</Button>
-				{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
+				{formError && <AuthFormError>{formError}</AuthFormError>}
 			</form>
 		</div>
 	);

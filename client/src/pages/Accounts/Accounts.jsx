@@ -4,11 +4,7 @@ import { Content, Form } from "../../components";
 import { AccountCard } from "./components";
 import { useHttp } from "../../hooks";
 import { selectAccounts, selectAccountTypes } from "../../redux/selectors";
-import {
-	addAccountAsync,
-	setAlertMessage,
-	SHOW_ALERT_MESSAGE,
-} from "../../redux/actions";
+import { addAccountAsync } from "../../redux/actions";
 
 import styled from "styled-components";
 
@@ -44,14 +40,7 @@ export const Accounts = () => {
 	const { request } = useHttp();
 
 	const onAddAccount = async (data) => {
-		dispatch(
-			addAccountAsync(request, {
-				...data,
-			})
-		).then((message) => {
-			dispatch(setAlertMessage(message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		});
+		dispatch(addAccountAsync(request, { ...data }));
 	};
 
 	return (

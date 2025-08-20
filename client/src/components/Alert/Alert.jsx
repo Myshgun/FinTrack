@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled, { keyframes, css } from "styled-components";
 import { HIDE_ALERT_MESSAGE } from "../../redux/actions";
+import { selectAlertType } from "../../redux/selectors";
 
 const slideIn = keyframes`
   from {
@@ -87,8 +88,10 @@ const ProgressBar = styled.div`
 	}
 `;
 
-export const Alert = ({ type = "info", duration = 3000, children }) => {
+export const Alert = ({ duration = 3000, children }) => {
 	const [visible, setVisible] = useState(true);
+
+	const type = useSelector(selectAlertType);
 
 	const dispatch = useDispatch();
 

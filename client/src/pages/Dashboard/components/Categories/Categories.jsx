@@ -1,23 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Chart, Loader } from "../../../../components";
 import { Content } from "../../../../components";
 import { useHttp } from "../../../../hooks";
-import { useDispatch } from "react-redux";
-import { setAlertMessage, SHOW_ALERT_MESSAGE } from "../../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAnalyticsCategories } from "../../../../redux/selectors";
+import { loadCategoriesDataAsync } from "../../../../redux/actions";
 
 export const Categories = ({ className }) => {
-	const [categoriesData, setCategoriesData] = useState(null);
+	const categoriesData = useSelector(selectAnalyticsCategories);
+
 	const { request } = useHttp();
 	const dispatch = useDispatch();
 
 	const fetchCategoriesData = useCallback(async () => {
-		try {
-			const data = await request("/analytics/expenses-by-category");
-			setCategoriesData(data);
-		} catch (error) {
-			dispatch(setAlertMessage(error.message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		}
+		dispatch(loadCategoriesDataAsync(request));
 	}, [request, dispatch]);
 
 	useEffect(() => {

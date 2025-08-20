@@ -2,7 +2,6 @@ import * as yup from "yup";
 import { Button, Content, Form, Table } from "../../../../components";
 import {
 	addAccountTypeAsync,
-	setAlertMessage,
 	SHOW_ALERT_MESSAGE,
 	toggleAccountTypeActiveAsync,
 } from "../../../../redux/actions";
@@ -42,21 +41,11 @@ export const AccountsManage = () => {
 	const dispatch = useDispatch();
 
 	const onAddAccountType = (data) => {
-		dispatch(
-			addAccountTypeAsync(request, {
-				...data,
-			})
-		).then((message) => {
-			dispatch(setAlertMessage(message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		});
+		dispatch(addAccountTypeAsync(request, { ...data }));
 	};
 
 	const onToggleActive = (id) => {
-		dispatch(toggleAccountTypeActiveAsync(request, id)).then((message) => {
-			dispatch(setAlertMessage(message));
-			dispatch(SHOW_ALERT_MESSAGE);
-		});
+		dispatch(toggleAccountTypeActiveAsync(request, id));
 	};
 
 	const columns = [

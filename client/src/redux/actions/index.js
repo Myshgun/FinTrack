@@ -6,3 +6,4 @@ export * from "./operations";
 export * from "./app";
 export * from "./auth";
 export * from "./manage";
+export * from "./analytics";
