@@ -11,12 +11,7 @@ import {
 	selectOperations,
 	selectOperationsPagination,
 } from "../../redux/selectors";
-import {
-	addOperationAsync,
-	loadOperationsAsync,
-	setAlert,
-	SHOW_ALERT_MESSAGE,
-} from "../../redux/actions";
+import { addOperationAsync } from "../../redux/actions";
 import { getOperationById } from "./utils";
 
 export const Operations = () => {
@@ -80,17 +75,16 @@ export const Operations = () => {
 
 	const onAddOperation = async (data) => {
 		dispatch(
-			addOperationAsync(request, {
-				...data,
-				amount: parseFloat(data.amount),
-			})
-		).then((message) => {
-			dispatch(setAlert(message));
-			dispatch(SHOW_ALERT_MESSAGE);
-
-			setCurrentPage(1);
-			dispatch(loadOperationsAsync(request, { page: 1, limit }));
-		});
+			addOperationAsync(
+				request,
+				{
+					...data,
+					amount: parseFloat(data.amount),
+				},
+				limit
+			)
+		);
+		setCurrentPage(1);
 	};
 
 	return (

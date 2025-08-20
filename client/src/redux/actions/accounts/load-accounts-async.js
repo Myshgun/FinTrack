@@ -9,9 +9,9 @@ export const loadAccountsAsync = (request) => async (dispatch) => {
 
 		const data = await request("/accounts");
 
-		dispatch(setAccountsData(data));
+		dispatch(setAccountsData(data.accounts));
 
-		return data.message;
+		return;
 	} catch (error) {
 		const errorMessage = error || "Ошибка загрузки данных о счетах";
 

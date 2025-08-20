@@ -1,1 +1,2 @@
-export const selectAccountTypes = ({ accountTypes }) => accountTypes;
+export const selectAccountTypes = ({ accountTypes }) =>
+	accountTypes.accountTypes;

@@ -8,6 +8,7 @@ const initialOperationsState = {
 		pages: 1,
 		total: 0,
 	},
+	isLoading: false,
 };
 
 export const operationsReducer = (state = initialOperationsState, action) => {
@@ -17,6 +18,12 @@ export const operationsReducer = (state = initialOperationsState, action) => {
 				...state,
 				operations: action.payload.operations,
 				pagination: action.payload.pagination,
+				isLoading: false,
+			};
+		case ACTION_TYPE.SET_OPERATIONS_LOADING:
+			return {
+				...state,
+				isLoading: action.payload,
 			};
 		default:
 			return state;

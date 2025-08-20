@@ -1,2 +1,2 @@
 export const selectOperationCategories = ({ operationCategories }) =>
-	operationCategories;
+	operationCategories.operationCategories;
